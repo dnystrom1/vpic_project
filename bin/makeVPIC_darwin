@@ -248,15 +248,6 @@ then
 
     VPIC_COMPILER_C="mpiicc"
     VPIC_COMPILER_CXX="mpiicpc"
-
-    if [ ! "x$VERSION_INTEL_MPI" = "x" ]
-    then
-        module load intel-mpi/$VERSION_INTEL_MPI
-        echo "module load intel-mpi/$VERSION_INTEL_MPI" >> bashrc.modules
-    else
-        module load intel-mpi
-        echo "module load intel-mpi" >> bashrc.modules
-    fi
 fi
 
 ################################################################################
@@ -587,6 +578,38 @@ then
 	-DUSE_V4_PORTABLE=ON \
 	-DUSE_V8_PORTABLE=ON \
 	-DUSE_V16_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DENABLE_COLOR_UNIT_TESTS=ON \
+	-DENABLE_INTEGRATED_TESTS=ON \
+	-DENABLE_UNIT_TESTS=ON \
+	-DUSE_V4_AVX2=ON \
+	-DUSE_V8_AVX2=ON \
+	-DUSE_V16_AVX512=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
 	-DUSE_PTHREADS=$SET_PTHREADS \
