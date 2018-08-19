@@ -45,6 +45,7 @@ VTHR="PTH"
 #VCOM="CLG"
 VCOM="INT"
 #VCOM="IBM"
+#VCOM="PGI"
 
 ################################################################################
 # Select an optimized or debug build.

@@ -5,14 +5,14 @@ test_home=../../../../../../VPIC_Test_Decks/lpi/v_04
 #######################################################################
 # Set run parameters.
 
-np=$1
-nnodes=$2
-nppn=$3
-ntpp=$4
-nppc=$5
-nstep=$6
-nrestart=$7
-size=$8
+np=${1}
+nnodes=${2}
+nppn=${3}
+ntpp=${4}
+nppc=${5}
+nstep=${6}
+nrestart=${7}
+size=${8}
 
 if [ "$#" -ne 11 ]
 then

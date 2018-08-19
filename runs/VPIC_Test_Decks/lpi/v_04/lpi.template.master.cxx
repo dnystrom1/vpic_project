@@ -113,9 +113,9 @@ begin_initialization
   double omega = sqrt( 1/n_e_over_n_crit );       // laser beam freq. in wpe
 
   // Box size for a single node.
-  double box_size_x        = 136 * ( 0.06 * 120.0 * 1e-4 /  6.0 ) / 96;
-  double box_size_y        =  32 * ( 0.06 * 120.0 * 1e-4 / 24.0 ) / 24;
-  double box_size_z        =  32 * ( 0.06 * 120.0 * 1e-4 / 24.0 ) / 24;
+  double box_size_x        = REPLACE_nx_sn * ( 0.06 * 120.0 * 1e-4 /  6.0 ) / 96;
+  double box_size_y        = REPLACE_ny_sn * ( 0.06 * 120.0 * 1e-4 / 24.0 ) / 24;
+  double box_size_z        = REPLACE_nz_sn * ( 0.06 * 120.0 * 1e-4 / 24.0 ) / 24;
 
   // Scale box size for single node to adjust single node memory footprint.
   box_size_x              *= REPLACE_scale_Lx;
@@ -128,9 +128,9 @@ begin_initialization
   box_size_z              *= REPLACE_scale_topology_z;
 
   // Grid size for a single node.
-  double nx                = 136;
-  double ny                =  32;
-  double nz                =  32;
+  double nx                = REPLACE_nx_sn;
+  double ny                = REPLACE_ny_sn;
+  double nz                = REPLACE_nz_sn;
 
   // Scale grid size for single node to adjust single node memory footprint.
   nx                      *= REPLACE_scale_Lx;

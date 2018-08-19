@@ -3,16 +3,24 @@
 #######################################################################
 # Set run parameters.
 
-nranks_x=$1
-nranks_y=$2
-nranks_z=$3
-nranks=$4
-nnodes=$5
+nx_sn=$1
+ny_sn=$2
+nz_sn=$3
+
+nranks_x=$4
+nranks_y=$5
+nranks_z=$6
+
+nranks=$7
+nnodes=$8
 
 #######################################################################
 # Edit the input file to use our configurable input parameters.
 
 update='
+s/REPLACE_nx_sn/'${nx_sn}'/
+s/REPLACE_ny_sn/'${ny_sn}'/
+s/REPLACE_nz_sn/'${nz_sn}'/
 s/REPLACE_topology_x/'${nranks_x}'/
 s/REPLACE_topology_y/'${nranks_y}'/
 s/REPLACE_topology_z/'${nranks_z}'/

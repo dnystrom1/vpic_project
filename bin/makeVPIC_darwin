@@ -61,12 +61,12 @@ fi
 
 VCOM="ZZZ"
 
-VPIC_COMPILER_C="mpicc"
-VPIC_COMPILER_CXX="mpicxx"
-
 if echo $ARCH | grep -q "INT"
 then
     VCOM="INT"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
 
     if [ ! "x$VERSION_INTEL" = "x" ]
     then
@@ -97,6 +97,9 @@ fi
 if echo $ARCH | grep -q "GNU"
 then
     VCOM="GNU"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
 
     if [ ! "x$VERSION_GNU" = "x" ]
     then
@@ -130,6 +133,9 @@ if echo $ARCH | grep -q "CLG"
 then
     VCOM="CLG"
 
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
     if echo $ARCH | grep -q "ARM"
     then
         if [ ! "x$VERSION_ARM_TX2" = "x" ]
@@ -145,6 +151,76 @@ then
 
         FLAGS_CXX_COMPILER="-g -O3"
     fi
+fi
+
+if echo $ARCH | grep -q "IBM"
+then
+    VCOM="IBM"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    if [ ! "x$VERSION_IBM" = "x" ]
+    then
+        module load ibm/$VERSION_IBM
+        echo "module load ibm/$VERSION_IBM" >> bashrc.modules
+    else
+        module load ibm
+        echo "module load ibm" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O2"
+    #FLAGS_C_COMPILER+=" -mavx2 -mfma"
+    #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_C_COMPILER+=" -Winline"
+    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
+
+    FLAGS_CXX_COMPILER="-g -O2"
+    #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_CXX_COMPILER+=" -Winline"
+    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+    #FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
+fi
+
+if echo $ARCH | grep -q "PGI"
+then
+    VCOM="PGI"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    if [ ! "x$VERSION_PGI" = "x" ]
+    then
+        module load pgi/$VERSION_PGI
+        echo "module load pgi/$VERSION_PGI" >> bashrc.modules
+    else
+        module load pgi
+        echo "module load pgi" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O2"
+    #FLAGS_C_COMPILER+=" -mavx2 -mfma"
+    #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_C_COMPILER+=" -Winline"
+    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
+
+    FLAGS_CXX_COMPILER="-g -O2"
+    #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_CXX_COMPILER+=" -Winline"
+    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+    #FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
 fi
 
 ################################################################################

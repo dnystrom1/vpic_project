@@ -1,0 +1,157 @@
+#!/bin/bash
+
+#######################################################################
+# Documentation of problem.
+#
+# This set of input files is designed to allow for strong scaling
+# studies of an LPI problem on Trinity Haswell and Trinity KNL nodes.
+# As a consequence, the grid dimensions has factors of 2 and 17. This
+# particular setup also allows for a weak scaling study up to 8192
+# nodes.
+#
+#######################################################################
+# Documentation of parameters.
+#
+# $1 = nx_sn
+# $2 = ny_sn
+# $3 = nz_sn
+# $4 = nranks_x
+# $5 = nranks_y
+# $6 = nranks_z
+# $7 = nranks
+# $8 = nnodes
+#
+#######################################################################
+
+#if [ "$#" -ne 1 ]
+#then
+#    make_template_input_deck=./make_input_deck_template
+#else
+#    make_template_input_deck=${1}/make_input_deck_template
+#fi
+
+make_template_input_deck='./make_input_deck_template 136 32 32'
+
+#######################################################################
+# Create the input deck templates.
+
+#----------------------------------------------------
+#                            $4  $5  $6  $7      $8
+#----------------------------------------------------
+${make_template_input_deck}   1   1   1  0000001 0001 # MPI Domain Grid, SS: 136 x 32 x 32
+${make_template_input_deck}   2   1   1  0000002 0001 # MPI Domain Grid, SS:  68 x 32 x 32
+${make_template_input_deck}   4   1   1  0000004 0001 # MPI Domain Grid, SS:  34 x 32 x 32
+${make_template_input_deck}   8   1   1  0000008 0001 # MPI Domain Grid, SS:  17 x 32 x 32
+${make_template_input_deck}   8   2   1  0000016 0001 # MPI Domain Grid, SS:  17 x 16 x 32
+${make_template_input_deck}  17   1   1  0000017 0001 # MPI Domain Grid, SS:   8 x 32 x 32
+${make_template_input_deck}   8   2   2  0000032 0001 # MPI Domain Grid, SS:  17 x 16 x 16
+${make_template_input_deck}  17   2   1  0000034 0001 # MPI Domain Grid, SS:   8 x 16 x 32
+${make_template_input_deck}   8   4   2  0000064 0001 # MPI Domain Grid, SS:  17 x  8 x 16
+${make_template_input_deck}  17   2   2  0000068 0001 # MPI Domain Grid, SS:   8 x 16 x 16
+${make_template_input_deck}   8   4   4  0000128 0001 # MPI Domain Grid, SS:  17 x  8 x  8
+${make_template_input_deck}  17   4   2  0000136 0001 # MPI Domain Grid, SS:   8 x  8 x 16
+${make_template_input_deck}   8   8   4  0000256 0001 # MPI Domain Grid, SS:  17 x  4 x  8
+${make_template_input_deck}  17   4   4  0000272 0001 # MPI Domain Grid, SS:   8 x  8 x  8
+
+${make_template_input_deck}   8   2   2  0000064 0002 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:    2, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0000128 0004 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:    4, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0000256 0008 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:    8, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0000512 0016 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:   16, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0001024 0032 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:   32, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0002048 0064 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:   64, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0004096 0128 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:  128, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0008192 0256 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:  256, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0016384 0512 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes:  512, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0032768 1024 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes: 1024, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0065536 2048 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes: 2048, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0131072 4096 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes: 4096, HSW w/ 1 RPC
+${make_template_input_deck}   8   2   2  0262144 8192 # MPI Domain Grid, WS:  17 x 16 x 16, nnodes: 8192, HSW w/ 1 RPC
+
+${make_template_input_deck}   8   4   2  0000128 0002 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:    2, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0000256 0004 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:    4, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0000512 0008 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:    8, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0001024 0016 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:   16, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0002048 0032 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:   32, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0004096 0064 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:   64, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0008192 0128 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:  128, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0016384 0256 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:  256, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0032768 0512 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes:  512, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0065536 1024 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes: 1024, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0131072 2048 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes: 2048, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0262144 4096 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes: 4096, KNL w/ 1 RPC, HSW w/ 2 RPC
+${make_template_input_deck}   8   4   2  0524288 8192 # MPI Domain Grid, WS:  17 x  8 x 16, nnodes: 8192, KNL w/ 1 RPC, HSW w/ 2 RPC
+
+${make_template_input_deck}   8   4   4  0000256 0002 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:    2, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0000512 0004 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:    4, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0001024 0008 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:    8, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0002048 0016 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:   16, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0004096 0032 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:   32, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0008192 0064 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:   64, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0016384 0128 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:  128, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0032768 0256 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:  256, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0065536 0512 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes:  512, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0131072 1024 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes: 1024, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0262144 2048 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes: 2048, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  0524288 4096 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes: 4096, KNL w/ 2 RPC
+${make_template_input_deck}   8   4   4  1048576 8192 # MPI Domain Grid, WS:  17 x  8 x  8, nnodes: 8192, KNL w/ 2 RPC
+
+${make_template_input_deck}   8   8   4  0000512 0002 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:    2, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0001024 0004 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:    4, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0002048 0008 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:    8, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0004096 0016 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:   16, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0008192 0032 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:   32, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0016384 0064 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:   64, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0032768 0128 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:  128, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0065536 0256 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:  256, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0131072 0512 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes:  512, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0262144 1024 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes: 1024, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  0524288 2048 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes: 2048, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  1048576 4096 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes: 4096, KNL w/ 4 RPC
+${make_template_input_deck}   8   8   4  2097152 8192 # MPI Domain Grid, WS:  17 x  4 x  8, nnodes: 8192, KNL w/ 4 RPC
+
+${make_template_input_deck}  17   2   2  0000136 0002 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:    2, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0000272 0004 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:    4, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0000544 0008 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:    8, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0001088 0016 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:   16, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0002176 0032 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:   32, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0004352 0064 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:   64, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0008704 0128 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:  128, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0017408 0256 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:  256, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0034816 0512 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes:  512, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0069632 1024 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes: 1024, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0139264 2048 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes: 2048, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0278528 4096 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes: 4096, KNL w/ 1 RPC
+${make_template_input_deck}  17   2   2  0557056 8192 # MPI Domain Grid, WS:   8 x 16 x 16, nnodes: 8192, KNL w/ 1 RPC
+
+${make_template_input_deck}  17   4   2  0000272 0002 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:    2, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0000544 0004 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:    4, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0001088 0008 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:    8, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0002176 0016 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:   16, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0004352 0032 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:   32, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0008704 0064 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:   64, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0017408 0128 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:  128, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0034816 0256 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:  256, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0069632 0512 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes:  512, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0139264 1024 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes: 1024, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0278528 2048 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes: 2048, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  0557056 4096 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes: 4096, KNL w/ 2 RPC
+${make_template_input_deck}  17   4   2  1114112 8192 # MPI Domain Grid, WS:   8 x  8 x 16, nnodes: 8192, KNL w/ 2 RPC
+
+${make_template_input_deck}  17   4   4  0000544 0002 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:    2, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0001088 0004 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:    4, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0002176 0008 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:    8, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0004352 0016 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:   16, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0008704 0032 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:   32, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0017408 0064 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:   64, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0034816 0128 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:  128, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0069632 0256 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:  256, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0139264 0512 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes:  512, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0278528 1024 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes: 1024, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  0557056 2048 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes: 2048, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  1114112 4096 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes: 4096, KNL w/ 4 RPC
+${make_template_input_deck}  17   4   4  2228224 8192 # MPI Domain Grid, WS:   8 x  8 x  8, nnodes: 8192, KNL w/ 4 RPC
+
+#######################################################################
+# Leave a marker file to indicate that this script has been run.
+
+touch z_vpic_input_deck_templates_generated
