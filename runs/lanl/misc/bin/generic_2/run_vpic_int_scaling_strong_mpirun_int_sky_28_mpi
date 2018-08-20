@@ -137,13 +137,13 @@ cpu_bind_rpc1_01="--map-by ppr:1:socket:pe=1"
 ##############################################################################################################################################
 # MPI only, 2 ranks/core.
 
-${aprun} -n 112 ${cpu_bind_rpc2_56} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_112_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_112_nrpc_001.log
-${aprun} -n  64 ${cpu_bind_rpc2_32} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_064_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_064_nrpc_001.log
-${aprun} -n  32 ${cpu_bind_rpc2_16} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_032_nrpc_001.log
-${aprun} -n  16 ${cpu_bind_rpc2_08} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_016_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_016_nrpc_001.log
-${aprun} -n   8 ${cpu_bind_rpc2_04} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_008_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_008_nrpc_001.log
-${aprun} -n   4 ${cpu_bind_rpc2_02} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_004_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_004_nrpc_001.log
-${aprun} -n   2 ${cpu_bind_rpc2_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_002_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_002_nrpc_001.log
+${aprun} -n 112 ${cpu_bind_rpc2_56} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_112_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_112_nrpc_002.log
+${aprun} -n  64 ${cpu_bind_rpc2_32} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_064_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_064_nrpc_002.log
+${aprun} -n  32 ${cpu_bind_rpc2_16} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_032_nrpc_002.log
+${aprun} -n  16 ${cpu_bind_rpc2_08} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_016_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_016_nrpc_002.log
+${aprun} -n   8 ${cpu_bind_rpc2_04} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_008_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_008_nrpc_002.log
+${aprun} -n   4 ${cpu_bind_rpc2_02} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_004_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_004_nrpc_002.log
+${aprun} -n   2 ${cpu_bind_rpc2_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_002_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_002_nrpc_002.log
 
 ##############################################################################################################################################
 # MPI only, 1 rank/core.
@@ -162,13 +162,13 @@ ${aprun} -n   1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_n
 ##############################################################################################################################################
 # MPI only, 2 ranks/core.
 
-${aprun} -n 112 ${cpu_bind_rpc2_56} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_112_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_112_nrpc_001.log
-${aprun} -n  64 ${cpu_bind_rpc2_32} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_064_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_064_nrpc_001.log
-${aprun} -n  32 ${cpu_bind_rpc2_16} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_032_nrpc_001.log
-${aprun} -n  16 ${cpu_bind_rpc2_08} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_016_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_016_nrpc_001.log
-${aprun} -n   8 ${cpu_bind_rpc2_04} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_008_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_008_nrpc_001.log
-${aprun} -n   4 ${cpu_bind_rpc2_02} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_004_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_004_nrpc_001.log
-${aprun} -n   2 ${cpu_bind_rpc2_01} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_002_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_002_nrpc_001.log
+${aprun} -n 112 ${cpu_bind_rpc2_56} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_112_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_112_nrpc_002.log
+${aprun} -n  64 ${cpu_bind_rpc2_32} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_064_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_064_nrpc_002.log
+${aprun} -n  32 ${cpu_bind_rpc2_16} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_032_nrpc_002.log
+${aprun} -n  16 ${cpu_bind_rpc2_08} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_016_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_016_nrpc_002.log
+${aprun} -n   8 ${cpu_bind_rpc2_04} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_008_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_008_nrpc_002.log
+${aprun} -n   4 ${cpu_bind_rpc2_02} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_004_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_004_nrpc_002.log
+${aprun} -n   2 ${cpu_bind_rpc2_01} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_002_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log
 
 ##############################################################################################################################################
 # MPI only, 1 rank/core.
