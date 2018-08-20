@@ -87,6 +87,14 @@ cpu_list_rpc1_01_socket_0="0"
 #cpu_bind_rpc1_02="--cpu_bind=map_cpu:${cpu_list_rpc1_02_socket_0},${cpu_list_rpc1_02_socket_1}"
 #cpu_bind_rpc1_01="--cpu_bind=map_cpu:${cpu_list_rpc1_01_socket_0}"
 
+cpu_bind_rpc1_56="--map-by ppr:28:socket:pe=1"
+cpu_bind_rpc1_32="--map-by ppr:16:socket:pe=1"
+cpu_bind_rpc1_16="--map-by ppr:8:socket:pe=1"
+cpu_bind_rpc1_08="--map-by ppr:4:socket:pe=1"
+cpu_bind_rpc1_04="--map-by ppr:2:socket:pe=1"
+cpu_bind_rpc1_02="--map-by ppr:1:socket:pe=1"
+cpu_bind_rpc1_01="--map-by ppr:1:socket:pe=1"
+
 ##############################################################################################################################################
 # Large DDR problem, strong scaled across 1 node.
 
