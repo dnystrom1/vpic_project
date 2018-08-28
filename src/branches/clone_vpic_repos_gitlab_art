@@ -1,8 +1,5 @@
 #!/bin/bash
 
-  remotes/origin/v407
-  remotes/origin/v407_wdn
-
 vpic_gitlab_art_repo=git@gitlab.lanl.gov:ART/arteam_performance_analysis/vpic.git
 
 cd master
