@@ -6,10 +6,6 @@ cd master
 git clone ${vpic_gitlab_art_repo}
 cd ..
 
-cd crossroads
-git clone --branch crossroads ${vpic_gitlab_art_repo}
-cd ..
-
 cd knl_open_science
 git clone --branch knl_open_science ${vpic_gitlab_art_repo}
 cd ..
@@ -52,24 +48,4 @@ cd ..
 
 cd knl_open_science_optimize
 git clone --branch knl_open_science_optimize ${vpic_gitlab_art_repo}
-cd ..
-
-cd pavilion
-git clone --recursive --branch pavilion ${vpic_gitlab_art_repo}
-cd ..
-
-cd pavilion_new
-git clone --branch pavilion_new ${vpic_gitlab_art_repo}
-cd ..
-
-cd pavilion_old
-git clone --recursive --branch pavilion_old ${vpic_gitlab_art_repo}
-cd ..
-
-cd v407
-git clone --recursive --branch v407 ${vpic_gitlab_art_repo}
-cd ..
-
-cd v407_wdn
-git clone --recursive --branch v407_wdn ${vpic_gitlab_art_repo}
 cd ..
