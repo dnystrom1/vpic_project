@@ -1,0 +1,51 @@
+#!/bin/bash
+
+vpic_gitlab_art_repo=git@gitlab.lanl.gov:ART/arteam_performance_analysis/vpic.git
+
+cd master
+git clone ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science
+git clone --branch knl_open_science ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_aosoa
+git clone --branch knl_open_science_aosoa ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_atomics
+git clone --branch knl_open_science_atomics ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_cout
+git clone --branch knl_open_science_cout ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_finish_v16
+git clone --branch knl_open_science_finish_v16 ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_hio
+git clone --branch knl_open_science_hio ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_hio_debug
+git clone --branch knl_open_science_hio_debug ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_ls_perf
+git clone --branch knl_open_science_ls_perf ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_new
+git clone --branch knl_open_science_new ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_old
+git clone --branch knl_open_science_old ${vpic_gitlab_art_repo}
+cd ..
+
+cd knl_open_science_optimize
+git clone --branch knl_open_science_optimize ${vpic_gitlab_art_repo}
+cd ..
