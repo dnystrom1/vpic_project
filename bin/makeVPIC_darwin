@@ -61,7 +61,7 @@ fi
 
 VCOM="ZZZ"
 
-if echo $ARCH | grep -q "INT"
+if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
 then
     VCOM="INT"
 
@@ -94,7 +94,7 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
 fi
 
-if echo $ARCH | grep -q "GNU"
+if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
 then
     VCOM="GNU"
 
@@ -111,7 +111,6 @@ then
     fi
 
     FLAGS_C_COMPILER="-g -O2"
-    FLAGS_C_COMPILER+=" -mavx2 -mfma"
     FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -119,17 +118,45 @@ then
     FLAGS_C_COMPILER+=" -Winline"
     #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
 
+    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
+    then
+        FLAGS_C_COMPILER+=" -mcpu=native"
+        FLAGS_C_COMPILER+=" -mtune=native"
+    fi
+
+    if echo $ARCH | grep -q "IBM_P9"
+    then
+        FLAGS_C_COMPILER+=" -maltivec"
+
+        #FLAGS_C_COMPILER+=" -mcpu=power9"
+        #FLAGS_C_COMPILER+=" -mtune=power9"
+    fi
+
     FLAGS_CXX_COMPILER="-g -O2"
-    FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
     FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
     FLAGS_CXX_COMPILER+=" -rdynamic"
     FLAGS_CXX_COMPILER+=" -Winline"
     #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+
+    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
+    then
+        FLAGS_CXX_COMPILER+=" -mcpu=native"
+        FLAGS_CXX_COMPILER+=" -mtune=native"
+    fi
+
+    if echo $ARCH | grep -q "IBM_P9"
+    then
+        FLAGS_CXX_COMPILER+=" -maltivec"
+        FLAGS_CXX_COMPILER+=" -std=gnu++11"
+
+        #FLAGS_CXX_COMPILER+=" -mcpu=power9"
+        #FLAGS_CXX_COMPILER+=" -mtune=power9"
+    fi
 fi
 
-if echo $ARCH | grep -q "CLG"
+if echo $ARCH | egrep -q "CLG_OPT|CLG_DBG"
 then
     VCOM="CLG"
 
@@ -153,7 +180,7 @@ then
     fi
 fi
 
-if echo $ARCH | grep -q "IBM"
+if echo $ARCH | egrep -q "IBM_OPT|IBM_DBG"
 then
     VCOM="IBM"
 
@@ -179,6 +206,7 @@ then
     #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
     FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER+=" -Wc++11-narrowing"
     #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -188,7 +216,7 @@ then
     #FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
 fi
 
-if echo $ARCH | grep -q "PGI"
+if echo $ARCH | egrep -q "PGI_OPT|PGI_DBG"
 then
     VCOM="PGI"
 
@@ -326,7 +354,7 @@ then
     FLAGS_CXX_COMPILER+=" -DVPIC_USE_VTUNE_OFF"
     FLAGS_CXX_COMPILER+=" -I$VTUNE_AMPLIFIER_XE_2017_DIR/include"
 
-    if echo $ARCH | grep -q "INT"
+    if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
     then
 	FLAGS_C_COMPILER+=" -debug inline-debug-info"
 	FLAGS_C_COMPILER+=" -parallel-source-info=2"
@@ -358,14 +386,14 @@ fi
 
 if echo $ARCH | grep -q "GPROF"
 then
-    if echo $ARCH | grep -q "INT"
+    if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
     then
 	FLAGS_C_COMPILER+=" -p"
 
 	FLAGS_CXX_COMPILER+=" -p"
     fi
 
-    if echo $ARCH | grep -q "GNU"
+    if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
     then
 	FLAGS_C_COMPILER+=" -pg"
 
@@ -610,6 +638,36 @@ then
 	-DUSE_V4_AVX2=ON \
 	-DUSE_V8_AVX2=ON \
 	-DUSE_V16_AVX512=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+##########################################################################################
+# Build an optimized version of VPIC with GNU compilers for IBM Power 9.
+
+if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DENABLE_COLOR_UNIT_TESTS=ON \
+	-DENABLE_INTEGRATED_TESTS=ON \
+	-DENABLE_UNIT_TESTS=ON \
+	-DUSE_V4_ALTIVEC=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
 	-DUSE_PTHREADS=$SET_PTHREADS \

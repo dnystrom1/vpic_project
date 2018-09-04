@@ -12,6 +12,8 @@ vtime="/usr/bin/time -p"
 
 #export VERSION_INTEL=18.0.1
 #export VERSION_GNU=6.4.0
+#export VERSION_IBM=xlc-16.1.0-xlf-16.1.0
+#export VERSION_PGI=18.4
 
 #export VERSION_OPEN_MPI=1.10.5
 #export VERSION_INTEL_MPI=2018.2
@@ -139,6 +141,19 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 # Build the optimized Intel case for the master branch with V16 support.
 
 ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build the optimized IBM cases for the master branch with V4 support.
+
+ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
