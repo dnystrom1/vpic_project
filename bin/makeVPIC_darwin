@@ -57,6 +57,59 @@ fi
 # Inspect the ARCH and FEAT variables to determine what kind of build we are doing.
 
 ################################################################################
+# Figure out which type of Darwin node we are running on.
+
+if echo $ARCH | egrep -q "INT_SNB"
+then
+    NODE="INT_SNB"
+fi
+
+if echo $ARCH | egrep -q "INT_IVY"
+then
+    NODE="INT_IVY"
+fi
+
+if echo $ARCH | egrep -q "INT_HSW"
+then
+    NODE="INT_HSW"
+fi
+
+if echo $ARCH | egrep -q "INT_BDW"
+then
+    NODE="INT_BDW"
+fi
+
+if echo $ARCH | egrep -q "INT_SKY"
+then
+    NODE="INT_SKY"
+fi
+
+if echo $ARCH | egrep -q "INT_KNL"
+then
+    NODE="INT_KNL"
+fi
+
+if echo $ARCH | egrep -q "IBM_PW8"
+then
+    NODE="IBM_PW8"
+fi
+
+if echo $ARCH | egrep -q "IBM_PW9"
+then
+    NODE="IBM_PW9"
+fi
+
+if echo $ARCH | egrep -q "AMD_EPC"
+then
+    NODE="AMD_EPC"
+fi
+
+if echo $ARCH | egrep -q "ARM_TX2"
+then
+    NODE="ARM_TX2"
+fi
+
+################################################################################
 # Figure out which compiler to use.
 
 VCOM="ZZZ"
@@ -124,7 +177,7 @@ then
         FLAGS_C_COMPILER+=" -mtune=native"
     fi
 
-    if echo $ARCH | grep -q "IBM_P9"
+    if echo $ARCH | grep -q "IBM_PW9"
     then
         FLAGS_C_COMPILER+=" -maltivec"
 
@@ -146,7 +199,7 @@ then
         FLAGS_CXX_COMPILER+=" -mtune=native"
     fi
 
-    if echo $ARCH | grep -q "IBM_P9"
+    if echo $ARCH | grep -q "IBM_PW9"
     then
         FLAGS_CXX_COMPILER+=" -maltivec"
         FLAGS_CXX_COMPILER+=" -std=gnu++11"
@@ -233,7 +286,10 @@ then
     fi
 
     FLAGS_C_COMPILER="-g -O2"
-    #FLAGS_C_COMPILER+=" -mavx2 -mfma"
+    FLAGS_C_COMPILER+=" -Mvect=simd"
+    FLAGS_C_COMPILER+=" -tp=pwr9"
+    FLAGS_C_COMPILER+=" -D__ALTIVEC__"
+    #FLAGS_C_COMPILER+=" -maltivec"
     #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     #FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -242,13 +298,16 @@ then
     #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
     FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER+=" -Mvect=simd"
+    FLAGS_CXX_COMPILER+=" -tp=pwr9"
+    FLAGS_CXX_COMPILER+=" -D__ALTIVEC__"
+    #FLAGS_CXX_COMPILER+=" -maltivec"
     #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
     #FLAGS_CXX_COMPILER+=" -Winline"
     #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
     #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
-    #FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
 fi
 
 ################################################################################
@@ -407,7 +466,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -436,7 +495,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -466,7 +525,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -496,7 +555,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -526,7 +585,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -557,7 +616,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -588,7 +647,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -620,7 +679,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -652,7 +711,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with GNU compilers for IBM Power 9.
 
-if [ $ARCH = "DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}" ]
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
