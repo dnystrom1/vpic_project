@@ -335,8 +335,14 @@ if echo $ARCH | grep -q "IMPI"
 then
     VMPI="IMPI"
 
-    VPIC_COMPILER_C="mpiicc"
-    VPIC_COMPILER_CXX="mpiicpc"
+    if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
+    then
+        VPIC_COMPILER_C="mpiicc"
+        VPIC_COMPILER_CXX="mpiicpc"
+    else
+        VPIC_COMPILER_C="mpicc"
+        VPIC_COMPILER_CXX="mpicxx"
+    fi
 fi
 
 ################################################################################
