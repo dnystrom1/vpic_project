@@ -1,0 +1,66 @@
+#!/bin/bash
+
+#######################################################################
+# Configure modules.
+
+source bashrc.modules
+
+#######################################################################
+# Figure out problem being run based on value of PWD variable.
+
+if echo $PWD | grep -q "lpi"
+then
+    prob=lpi
+fi
+
+if echo $PWD | grep -q "reconnection"
+then
+    prob=reconnection
+fi
+
+if [ "x$prob" = "x" ]
+then
+    echo "The prob bash variable is not set to a valid problem."
+    exit 1
+fi
+
+#######################################################################
+# Build executables for 1 thread/rank and 1 rank/core
+
+./vpic ${prob}_ddr_nn_0001_nppn_001_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_002_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_004_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_008_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_016_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_032_ntpp_001.cxx
+
+./vpic ${prob}_hbm_nn_0001_nppn_001_ntpp_001.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_002_ntpp_001.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_004_ntpp_001.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_008_ntpp_001.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_016_ntpp_001.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_032_ntpp_001.cxx
+
+#######################################################################
+# Build executables for 1 thread/rank and 2 ranks/core.
+
+./vpic ${prob}_ddr_nn_0001_nppn_064_ntpp_001.cxx
+
+./vpic ${prob}_hbm_nn_0001_nppn_064_ntpp_001.cxx
+
+#######################################################################
+# Build executables for 2 threads/rank and 1 rank/core.
+
+./vpic ${prob}_ddr_nn_0001_nppn_001_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_002_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_004_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_008_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_016_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0001_nppn_032_ntpp_002.cxx
+
+./vpic ${prob}_hbm_nn_0001_nppn_001_ntpp_002.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_002_ntpp_002.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_004_ntpp_002.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_008_ntpp_002.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_016_ntpp_002.cxx
+./vpic ${prob}_hbm_nn_0001_nppn_032_ntpp_002.cxx

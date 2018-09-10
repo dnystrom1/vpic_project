@@ -35,6 +35,7 @@ echo '#-------------------------------------------------------------------------
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_001_nrpc_001.log   ${prob}_ddr_nn_0001_nppn_016_nrpc_001.log                       >> plot_data_nrpc_001.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_001_nrpc_001.log   ${prob}_ddr_nn_0001_nppn_032_nrpc_001.log                       >> plot_data_nrpc_001.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_001_nrpc_001.log   ${prob}_ddr_nn_0001_nppn_064_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_ddr_nn_0001_nppn_001_nrpc_001.log   ${prob}_ddr_nn_0001_nppn_068_nrpc_001.log                       >> plot_data_nrpc_001.dat
 
 echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_001.dat
 
@@ -54,6 +55,7 @@ echo '#-------------------------------------------------------------------------
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_002_nrpc_002.log   ${prob}_ddr_nn_0001_nppn_032_nrpc_002.log                       >> plot_data_nrpc_002.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_002_nrpc_002.log   ${prob}_ddr_nn_0001_nppn_064_nrpc_002.log                       >> plot_data_nrpc_002.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_002_nrpc_002.log   ${prob}_ddr_nn_0001_nppn_128_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_ddr_nn_0001_nppn_002_nrpc_002.log   ${prob}_ddr_nn_0001_nppn_136_nrpc_002.log                       >> plot_data_nrpc_002.dat
 
 echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_002.dat
 
@@ -73,5 +75,6 @@ echo '#-------------------------------------------------------------------------
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_004_nrpc_004.log   ${prob}_ddr_nn_0001_nppn_064_nrpc_004.log                       >> plot_data_nrpc_004.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_004_nrpc_004.log   ${prob}_ddr_nn_0001_nppn_128_nrpc_004.log                       >> plot_data_nrpc_004.dat
 ./parseLogFile   ${prob}_ddr_nn_0001_nppn_004_nrpc_004.log   ${prob}_ddr_nn_0001_nppn_256_nrpc_004.log                       >> plot_data_nrpc_004.dat
+./parseLogFile   ${prob}_ddr_nn_0001_nppn_004_nrpc_004.log   ${prob}_ddr_nn_0001_nppn_272_nrpc_004.log                       >> plot_data_nrpc_004.dat
 
 echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_004.dat

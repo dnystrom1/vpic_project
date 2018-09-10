@@ -163,7 +163,8 @@ then
         echo "module load gcc" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O2"
+    #FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER="-g -Ofast"
     FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -185,7 +186,8 @@ then
         #FLAGS_C_COMPILER+=" -mtune=power9"
     fi
 
-    FLAGS_CXX_COMPILER="-g -O2"
+    #FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER="-g -Ofast"
     FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -249,7 +251,7 @@ then
         echo "module load ibm" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER="-g -O4"
     #FLAGS_C_COMPILER+=" -mavx2 -mfma"
     #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
@@ -258,7 +260,7 @@ then
     #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
     #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
-    FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER="-g -O4"
     FLAGS_CXX_COMPILER+=" -Wc++11-narrowing"
     #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
@@ -285,7 +287,7 @@ then
         echo "module load pgi" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER="-g -O4"
     FLAGS_C_COMPILER+=" -Mvect=simd"
     FLAGS_C_COMPILER+=" -tp=pwr9"
     FLAGS_C_COMPILER+=" -D__ALTIVEC__"
@@ -297,7 +299,7 @@ then
     #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
     #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
-    FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER="-g -O4"
     FLAGS_CXX_COMPILER+=" -Mvect=simd"
     FLAGS_CXX_COMPILER+=" -tp=pwr9"
     FLAGS_CXX_COMPILER+=" -D__ALTIVEC__"
