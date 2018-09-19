@@ -56,23 +56,26 @@ VOPT="OPT"
 #VOPT="DBG"
 
 ################################################################################
+# Select a Darwin node type.
+
+#NODE="INT_SNB"
+#NODE="INT_IVY"
+#NODE="INT_HSW"
+NODE="INT_BDW"
+#NODE="INT_SKY"
+#NODE="INT_KNL"
+
+#NODE="IBM_PW8"
+#NODE="IBM_PW9"
+
+#NODE="AMD_EPC"
+
+#NODE="ARM_TX2"
+
+################################################################################
 # Select extra features to use. More than one can be selected.
 
 FEAT+="_ARTEAM"
-
-#FEAT+="_INT_SNB"
-#FEAT+="_INT_IVY"
-#FEAT+="_INT_HSW"
-FEAT+="_INT_BDW"
-#FEAT+="_INT_SKY"
-#FEAT+="_INT_KNL"
-
-#FEAT+="_IBM_P8"
-#FEAT+="_IBM_P9"
-
-#FEAT+="_AMD"
-
-#FEAT+="_ARM_TX2"
 
 FEAT+="_LSORT"
 #FEAT+="_TSORT"
@@ -101,7 +104,7 @@ FEAT+="_COM_FLAGS_00"
 ################################################################################
 # Build the optimized Intel case for the master branch without vector support.
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
@@ -109,17 +112,17 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 ################################################################################
 # Build the optimized Intel cases for the master branch with V4 support.
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
@@ -127,12 +130,12 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 ################################################################################
 # Build the optimized Intel cases for the master branch with V8 support.
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
@@ -140,12 +143,12 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 ################################################################################
 # Build the optimized Intel case for the master branch with V16 support.
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
@@ -153,7 +156,7 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 ################################################################################
 # Build the optimized IBM cases for the master branch with V4 support.
 
-ARCH=DARWIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
