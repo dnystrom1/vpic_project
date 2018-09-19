@@ -77,21 +77,36 @@ then
         echo "module load intel" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O3 -xHost"
+    FLAGS_C_COMPILER="-g -O3 -xhost"
+    FLAGS_C_COMPILER+=" -qopenmp-simd"
     FLAGS_C_COMPILER+=" -inline-forceinline -vec-threshold0"
     FLAGS_C_COMPILER+=" -qoverride-limits"
     FLAGS_C_COMPILER+=" -no-ansi-alias"
     FLAGS_C_COMPILER+=" -Wl,--export-dynamic"
     FLAGS_C_COMPILER+=" -Winline"
-    FLAGS_C_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_C_COMPILER+=" -qopt-report=5"
+    FLAGS_C_COMPILER+=" -qopt-report-phase=all"
+    FLAGS_C_COMPILER+=" -qopt-report-annotate"
+    FLAGS_C_COMPILER+=" -qopt-report-annotate-position=both"
 
-    FLAGS_CXX_COMPILER="-g -O3 -xHost"
+    FLAGS_CXX_COMPILER="-g -O3 -xhost"
+    FLAGS_CXX_COMPILER+=" -qopenmp-simd"
     FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
     FLAGS_CXX_COMPILER+=" -qoverride-limits"
     FLAGS_CXX_COMPILER+=" -no-ansi-alias"
     FLAGS_CXX_COMPILER+=" -Wl,--export-dynamic"
     FLAGS_CXX_COMPILER+=" -Winline"
-    FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_CXX_COMPILER+=" -qopt-report=5"
+    FLAGS_CXX_COMPILER+=" -qopt-report-phase=all"
+    FLAGS_CXX_COMPILER+=" -qopt-report-annotate"
+    FLAGS_CXX_COMPILER+=" -qopt-report-annotate-position=both"
+
+    if echo $ARCH | grep -q "INT_SKY"
+    then
+        FLAGS_C_COMPILER+=" -qopt-zmm-usage=high"
+
+        FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
+    fi
 fi
 
 if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
