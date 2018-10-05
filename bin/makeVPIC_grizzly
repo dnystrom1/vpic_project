@@ -99,6 +99,7 @@ then
     FLAGS_C_COMPILER+=" -Wl,--export-dynamic"
     FLAGS_C_COMPILER+=" -Winline"
     FLAGS_C_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_C_COMPILER+=" -diag-disable 7346"
 
     FLAGS_CXX_COMPILER="-g -O3"
     FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
@@ -107,6 +108,7 @@ then
     FLAGS_CXX_COMPILER+=" -Wl,--export-dynamic"
     FLAGS_CXX_COMPILER+=" -Winline"
     FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_CXX_COMPILER+=" -diag-disable 7346"
 fi
 
 if echo $ARCH | grep -q "GNU"

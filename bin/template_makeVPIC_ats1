@@ -88,6 +88,7 @@ then
     FLAGS_C_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
     FLAGS_C_COMPILER+=" -rdynamic -dynamic"
     FLAGS_C_COMPILER+=" -qopt-zmm-usage=high"
+    FLAGS_C_COMPILER+=" -diag-disable 7346"
 
     FLAGS_CXX_COMPILER="-g -O3"
     FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
@@ -97,6 +98,7 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
     FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
     FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
+    FLAGS_CXX_COMPILER+=" -diag-disable 7346"
 
     if echo $ARCH | grep -q "COM_FLAGS_01"
     then
@@ -109,6 +111,7 @@ then
         FLAGS_C_COMPILER+=" -rdynamic -dynamic"
         FLAGS_C_COMPILER+=" -qopt-prefetch=2"
         FLAGS_C_COMPILER+=" -qopt-zmm-usage=high"
+        FLAGS_C_COMPILER+=" -diag-disable 7346"
 
         FLAGS_CXX_COMPILER="-g -O3"
         FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
@@ -119,6 +122,7 @@ then
         FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
         FLAGS_CXX_COMPILER+=" -qopt-prefetch=2"
         FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
+        FLAGS_CXX_COMPILER+=" -diag-disable 7346"
     fi
 
     if echo $ARCH | grep -q "COM_FLAGS_02"
@@ -132,6 +136,7 @@ then
         FLAGS_C_COMPILER+=" -rdynamic -dynamic"
         FLAGS_C_COMPILER+=" -DVPIC_SWAP_MPI_PTHREAD_INIT"
         FLAGS_C_COMPILER+=" -qopt-zmm-usage=high"
+        FLAGS_C_COMPILER+=" -diag-disable 7346"
 
         FLAGS_CXX_COMPILER="-g -O3"
         FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
@@ -142,6 +147,7 @@ then
         FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
         FLAGS_CXX_COMPILER+=" -DVPIC_SWAP_MPI_PTHREAD_INIT"
         FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
+        FLAGS_CXX_COMPILER+=" -diag-disable 7346"
     fi
 fi
 
