@@ -141,7 +141,7 @@ then
     FLAGS_C_COMPILER+=" -qopt-report-phase=all"
     FLAGS_C_COMPILER+=" -qopt-report-annotate"
     FLAGS_C_COMPILER+=" -qopt-report-annotate-position=both"
-    FLAGS_C_COMPILER+=" -diag-disable 7346"
+    FLAGS_C_COMPILER+=" -diag-disable 10397"
 
     FLAGS_CXX_COMPILER="-g -O3 -xhost"
     FLAGS_CXX_COMPILER+=" -qopenmp-simd"
@@ -154,7 +154,7 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report-phase=all"
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate"
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate-position=both"
-    FLAGS_CXX_COMPILER+=" -diag-disable 7346"
+    FLAGS_CXX_COMPILER+=" -diag-disable 10397"
 
     if echo $ARCH | grep -q "INT_SKY"
     then
