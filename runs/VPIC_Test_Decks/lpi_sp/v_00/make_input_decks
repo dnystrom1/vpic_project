@@ -1,0 +1,98 @@
+#!/bin/bash
+
+test_home=../../../../../../VPIC_Test_Decks/lpi/v_04
+
+#######################################################################
+# Set run parameters.
+
+np=${1}
+nnodes=${2}
+nppn=${3}
+ntpp=${4}
+nppc=${5}
+nstep=${6}
+nrestart=${7}
+size=${8}
+
+if [ "$#" -ne 11 ]
+then
+    snodes_x='1'
+    snodes_y='1'
+    snodes_z='1'
+else
+    snodes_x=${9}
+    snodes_y=${10}
+    snodes_z=${11}
+fi
+
+#######################################################################
+# Determine if we need to scale single node problem size.
+
+if echo $size | grep -q "ddr"
+then
+    ssize_x='2'
+    ssize_y='2'
+    ssize_z='2'
+else
+    ssize_x='1'
+    ssize_y='1'
+    ssize_z='1'
+fi
+
+#######################################################################
+# Set some parameters that we don't want to vary right now.
+
+field_io_format='band_interleave'
+num_turnstiles='2048'
+field_interval='1500'
+particle_interval='1500'
+mi_me='100'
+eon_sort_interval='25'
+ion_sort_interval='100'
+eon_sort_method='0'
+ion_sort_method='0'
+energies_interval='-10'
+mobile_ions='1'
+status_interval='50000'
+sync_shared_interval='10000'
+clean_div_e_interval='10000'
+clean_div_b_interval='10000'
+maxwellian_reflux_bc='0'
+max_local_np_scale='1.5'
+
+#snodes='0001'
+#snodes_x=$((10#${snodes}))
+
+#######################################################################
+# Edit the input file to use our configurable input parameters.
+
+update='
+s/REPLACE_scale_Lx/'${ssize_x}'/
+s/REPLACE_scale_topology_x/'${snodes_x}'/
+s/REPLACE_scale_Ly/'${ssize_y}'/
+s/REPLACE_scale_topology_y/'${snodes_y}'/
+s/REPLACE_scale_Lz/'${ssize_z}'/
+s/REPLACE_scale_topology_z/'${snodes_z}'/
+s/REPLACE_nppc/'${nppc}'/
+s/REPLACE_nstep/'${nstep}'/
+s/REPLACE_nrestart/'${nrestart}'/
+s/REPLACE_field_io_format/'${field_io_format}'/
+s/REPLACE_num_turnstiles/'${num_turnstiles}'/
+s/REPLACE_field_interval/'${field_interval}'/
+s/REPLACE_particle_interval/'${particle_interval}'/
+s/REPLACE_mi_me/'${mi_me}'/
+s/REPLACE_eon_sort_interval/'${eon_sort_interval}'/
+s/REPLACE_ion_sort_interval/'${ion_sort_interval}'/
+s/REPLACE_eon_sort_method/'${eon_sort_method}'/
+s/REPLACE_ion_sort_method/'${ion_sort_method}'/
+s/REPLACE_energies_interval/'${energies_interval}'/
+s/REPLACE_mobile_ions/'${mobile_ions}'/
+s/REPLACE_status_interval/'${status_interval}'/
+s/REPLACE_sync_shared_interval/'${sync_shared_interval}'/
+s/REPLACE_clean_div_e_interval/'${clean_div_e_interval}'/
+s/REPLACE_clean_div_b_interval/'${clean_div_b_interval}'/
+s/REPLACE_maxwellian_reflux_bc/'${maxwellian_reflux_bc}'/
+s/REPLACE_max_local_np_scale/'${max_local_np_scale}'/
+'
+
+cat ${test_home}/lpi_np_${np}_nn_${nnodes}.template.cxx | sed -e "$update" >& lpi_${size}_nn_${nnodes}_nppn_${nppn}_ntpp_${ntpp}.cxx
