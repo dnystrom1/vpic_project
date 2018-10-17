@@ -8,6 +8,11 @@ then
     prob=lpi
 fi
 
+if echo $PWD | grep -q "lpi_sp"
+then
+    prob=lpi_sp
+fi
+
 if echo $PWD | grep -q "reconnection"
 then
     prob=reconnection
