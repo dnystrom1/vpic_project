@@ -470,9 +470,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
 	-DUSE_PTHREADS=$SET_PTHREADS \
@@ -483,6 +480,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -499,9 +500,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -513,6 +511,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -529,9 +531,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_SSE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -543,6 +542,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -559,9 +562,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_AVX2=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -573,6 +573,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -589,9 +593,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DUSE_V8_PORTABLE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
@@ -604,6 +605,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -620,9 +625,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_AVX2=ON \
 	-DUSE_V8_AVX2=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
@@ -635,6 +637,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -651,9 +657,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DUSE_V8_PORTABLE=ON \
 	-DUSE_V16_PORTABLE=ON \
@@ -667,6 +670,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -683,9 +690,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
 	-DUSE_PTHREADS=$SET_PTHREADS \
@@ -696,6 +700,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -712,9 +720,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -726,6 +731,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -742,9 +751,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_SSE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -756,6 +762,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -772,9 +782,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_AVX2=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -786,6 +793,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -802,9 +813,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DUSE_V8_PORTABLE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
@@ -817,6 +825,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -833,9 +845,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_AVX2=ON \
 	-DUSE_V8_AVX2=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
@@ -848,6 +857,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -864,9 +877,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_PORTABLE=ON \
 	-DUSE_V8_PORTABLE=ON \
 	-DUSE_V16_PORTABLE=ON \
@@ -880,6 +890,10 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -896,9 +910,6 @@ then
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DENABLE_COLOR_UNIT_TESTS=ON \
-	-DENABLE_INTEGRATED_TESTS=ON \
-	-DENABLE_UNIT_TESTS=ON \
 	-DUSE_V4_AVX2=ON \
 	-DUSE_V8_AVX2=ON \
 	-DUSE_V16_AVX512=ON \
@@ -912,3 +923,7 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
