@@ -146,8 +146,8 @@ begin_initialization {
 
   // Box size for a single node.
   double box_size_x         = REPLACE_nx_sn * 30.0 * 1e-4 / 6000.0;  // microns
-  double box_size_y         = REPLACE_nx_sn * 30.0 * 1e-4 / 6000.0;  // microns (ignored if 1d or 2d out of plane)
-  double box_size_z         = REPLACE_nx_sn * 30.0 * 1e-4 / 6000.0;  // microns (ignored if 1d or 2d out of plane)
+  double box_size_y         = REPLACE_ny_sn * 30.0 * 1e-4 / 6000.0;  // microns (ignored if 1d or 2d out of plane)
+  double box_size_z         = REPLACE_nz_sn * 30.0 * 1e-4 / 6000.0;  // microns (ignored if 1d or 2d out of plane)
 
   // Scale box size for single node to adjust single node memory footprint.
   box_size_x              *= REPLACE_scale_Lx;
@@ -1925,13 +1925,13 @@ begin_field_injection {
         field(1,iy,iz).ey+=prefactor*cos(PHASE)*exp(-R2Z/(global->width*global->width))*MASK*pulse_shape_factor;
 #endif
 
-#if 1 // Linear
+#if 0 // Linear
     for ( int iz=1; iz<=grid->nz+1; ++iz )
       for ( int iy=1; iy<=grid->ny; ++iy )
         field(1,iy,iz).ey+=prefactor*cos(PHASE)*exp(-R2/(global->width*global->width))*MASK*pulse_shape_factor;
 #endif
 
-#if 0 // Linear plane wave
+#if 1 // Linear plane wave
     for ( int iz=1; iz<=grid->nz+1; ++iz )
       for ( int iy=1; iy<=grid->ny; ++iy )
         field(1,iy,iz).ey+=prefactor*cos(PHASE)*pulse_shape_factor;

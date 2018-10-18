@@ -30,9 +30,9 @@ fi
 
 if echo $size | grep -q "ddr"
 then
-    ssize_x='2'
-    ssize_y='2'
-    ssize_z='2'
+    ssize_x='1'
+    ssize_y='1'
+    ssize_z='8'
 else
     ssize_x='1'
     ssize_y='1'
@@ -95,4 +95,4 @@ s/REPLACE_maxwellian_reflux_bc/'${maxwellian_reflux_bc}'/
 s/REPLACE_max_local_np_scale/'${max_local_np_scale}'/
 '
 
-cat ${test_home}/lpi_np_${np}_nn_${nnodes}.template.cxx | sed -e "$update" >& lpi_${size}_nn_${nnodes}_nppn_${nppn}_ntpp_${ntpp}.cxx
+cat ${test_home}/lpi_sp_np_${np}_nn_${nnodes}.template.cxx | sed -e "$update" >& lpi_sp_${size}_nn_${nnodes}_nppn_${nppn}_ntpp_${ntpp}.cxx
