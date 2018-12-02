@@ -88,6 +88,13 @@ then
     FLAGS_CXX_COMPILER+=" -D__PURE_INTEL_C99_HEADERS__"
     #FLAGS_CXX_COMPILER+=" -D_Float32=float -D_Float64=double -D_Float128=__float128"
     #FLAGS_CXX_COMPILER+=" -D_Float32x=_Float64 -D_Float64x=_Float128"
+
+    if echo $ARCH | grep -q "V1_NONE"
+    then
+        FLAGS_C_COMPILER+=" -qopenmp-simd"
+
+        FLAGS_CXX_COMPILER+=" -qopenmp-simd"
+    fi
 fi
 
 if echo $ARCH | grep -q "GNU"
@@ -487,7 +494,7 @@ then
 	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
 	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
 	..
-    make -k -j $NJ VERBOSE=1
+    make -j $NJ VERBOSE=1
 fi
 
 #	-DENABLE_COLOR_UNIT_TESTS=ON \

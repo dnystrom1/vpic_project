@@ -47,6 +47,31 @@ xpre='./'
 
 aprun='mpirun'
 
+############################################################
+# Configure run with mpitrace.
+
+#xpre='./'
+
+#aprun='mpirun'
+
+#export MPITRACE_ROOT=/home/wdn/Projects/mpitrace_walkup_project/build/DARWIN_IBM_PW9_OMPI_GNU_OPT_ARTEAM/mpitrace_walkup
+
+#source $MPITRACE_ROOT/bashrc.modules
+
+# Case 1
+#export VPROF_PROFILE=yes
+#export LD_PRELOAD=$MPITRACE_ROOT/src/libmpitrace.so
+
+# Case 2
+#export HPM_PROFILE_THRESHOLD=2000000
+#export HPM_PROFILE_EVENT=""
+#export LD_PRELOAD=$MPITRACE_ROOT/src/libmpihpm.so
+
+# Case 3
+#export HPM_PROFILE_THRESHOLD=2000000
+#export HPM_PROFILE_EVENT=""
+#export LD_PRELOAD=$MPITRACE_ROOT/hpmprof/libhpmprof.so
+
 ##############################################################################################################################################
 # Define some useful variables to tame the command lines when using the low level process binding interface.
 
