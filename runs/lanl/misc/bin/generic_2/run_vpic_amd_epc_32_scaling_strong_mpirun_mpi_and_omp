@@ -54,7 +54,10 @@ aprun='mpirun'
 
 #aprun='mpirun'
 
-#export MPITRACE_ROOT=/home/wdn/Projects/mpitrace_walkup_project/build/DARWIN_AMD_EPC_OMPI_GNU_OPT_ARTEAM/mpitrace_walkup
+#ARCH=DARWIN_AMD_EPC_OMPI_GNU_OPT_ARTEAM
+#PROJECTS_ROOT=/home/wdn/Projects
+#MPITRACE_PROJECT_ROOT=$PROJECTS_ROOT/mpitrace_walkup_project
+#MPITRACE_ROOT=$MPITRACE_PROJECT_ROOT/build/$ARCH/mpitrace_walkup
 
 #source $MPITRACE_ROOT/bashrc.modules
 

@@ -47,6 +47,34 @@ xpre='./'
 aprun='srun'
 
 ############################################################
+# Configure run with mpitrace.
+
+#xpre='./'
+
+#aprun='mpirun'
+
+#ARCH=TRINITITE_CMPI_GNU_OPT_HSW_ARTEAM
+#PROJECTS_ROOT=/usr/projects/artab/users/wdn/Projects
+#MPITRACE_PROJECT_ROOT=$PROJECTS_ROOT/mpitrace_walkup_project
+#MPITRACE_ROOT=$MPITRACE_PROJECT_ROOT/build/$ARCH/mpitrace_walkup
+
+#source $MPITRACE_ROOT/bashrc.modules
+
+# Case 1
+#export VPROF_PROFILE=yes
+#export LD_PRELOAD=$MPITRACE_ROOT/src/libmpitrace.so
+
+# Case 2
+#export HPM_PROFILE_THRESHOLD=2000000
+#export HPM_PROFILE_EVENT=""
+#export LD_PRELOAD=$MPITRACE_ROOT/src/libmpihpm.so
+
+# Case 3
+#export HPM_PROFILE_THRESHOLD=2000000
+#export HPM_PROFILE_EVENT=""
+#export LD_PRELOAD=$MPITRACE_ROOT/hpmprof/libhpmprof.so
+
+############################################################
 # Configure CrayPat-lite run.
 
 #xpre='./'
