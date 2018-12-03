@@ -51,7 +51,7 @@ aprun='srun'
 
 #xpre='./'
 
-#aprun='mpirun'
+#aprun='srun'
 
 #ARCH=TRINITITE_CMPI_GNU_OPT_KNL_ARTEAM
 #PROJECTS_ROOT=/usr/projects/artab/users/wdn/Projects

@@ -52,7 +52,7 @@ aprun='srun'
 
 #xpre='./'
 
-#aprun='mpirun'
+#aprun='srun'
 
 #ARCH=SNOW_OMPI_GNU_OPT_ARTEAM
 #PROJECTS_ROOT=/usr/projects/artab/users/wdn/Projects
