@@ -67,7 +67,7 @@ then
         echo '' >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O3"
+    FLAGS_C_COMPILER="-g -O3 -xhost"
     FLAGS_C_COMPILER+=" -inline-forceinline -vec-threshold0"
     FLAGS_C_COMPILER+=" -qoverride-limits"
     FLAGS_C_COMPILER+=" -no-ansi-alias"
@@ -78,7 +78,7 @@ then
     FLAGS_C_COMPILER+=" -D_Float32=float -D_Float64=double -D_Float128=__float128"
     FLAGS_C_COMPILER+=" -D_Float32x=_Float64 -D_Float64x=_Float128"
 
-    FLAGS_CXX_COMPILER="-g -O3"
+    FLAGS_CXX_COMPILER="-g -O3 -xhost"
     FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
     FLAGS_CXX_COMPILER+=" -qoverride-limits"
     FLAGS_CXX_COMPILER+=" -no-ansi-alias"
