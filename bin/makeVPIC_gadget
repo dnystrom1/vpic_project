@@ -309,6 +309,16 @@ then
 fi
 
 ################################################################################
+# Figure out if we are using AoSoA data format for particles.
+
+if echo $ARCH | grep -q "AOSOA"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_AOSOA_P"
+fi
+
+################################################################################
 # Figure out if this is a VTUNE build.
 
 SET_SHARED_LIBS="OFF"

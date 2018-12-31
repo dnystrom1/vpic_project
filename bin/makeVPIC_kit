@@ -226,6 +226,16 @@ then
 fi
 
 ################################################################################
+# Figure out if we are using AoSoA data format for particles.
+
+if echo $ARCH | grep -q "AOSOA"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_AOSOA_P"
+fi
+
+################################################################################
 # Figure out if we are using check points without reverse symbol table lookup
 # support.
 
