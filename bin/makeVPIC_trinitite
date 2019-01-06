@@ -316,6 +316,27 @@ then
     FLAGS_C_COMPILER+=" -DVPIC_USE_AOSOA_P"
 
     FLAGS_CXX_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    if echo $ARCH | egrep -q "_DBG_V4_|_OPT_V4_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+    fi
 fi
 
 ################################################################################
