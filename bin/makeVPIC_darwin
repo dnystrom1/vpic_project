@@ -440,6 +440,33 @@ then
 fi
 
 ################################################################################
+# Figure out if we are using uncenter/center vectorization and testing.
+
+if echo $ARCH | grep -q "UNCENTER"
+then
+    if echo $ARCH | egrep -q "_DBG_V4_|_OPT_V4_"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
+    fi
+fi
+
+################################################################################
 # Figure out if we are using check points without reverse symbol table lookup
 # support.
 
