@@ -444,25 +444,56 @@ fi
 
 if echo $ARCH | grep -q "UNCENTER"
 then
-    if echo $ARCH | egrep -q "_DBG_V4_|_OPT_V4_"
+    if echo $ARCH | egrep -q "_DBG_V1_|_OPT_V1_"
     then
-        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
+        if echo $ARCH | egrep -q "INT_HSW"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
 
-        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
-    fi
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+        fi
 
-    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
-    then
-        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+        if echo $ARCH | egrep -q "INT_BDW"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
 
-        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
-    fi
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+        fi
 
-    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
-    then
-        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
+        if echo $ARCH | egrep -q "INT_SKY"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
 
-        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
+        fi
+
+        if echo $ARCH | egrep -q "INT_KNL"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
+        fi
+
+        if echo $ARCH | egrep -q "IBM_PW9"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
+        fi
+
+        if echo $ARCH | egrep -q "AMD_EPC"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+        fi
+
+        if echo $ARCH | egrep -q "ARM_TX2"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
+        fi
     fi
 fi
 
