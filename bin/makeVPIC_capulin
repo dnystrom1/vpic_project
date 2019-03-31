@@ -1,0 +1,505 @@
+#!/bin/bash
+
+#set -x
+
+##########################################################################################
+# Set some high level variables.
+
+ARCH=$1
+
+FEAT=$2
+
+BRANCH=$3
+
+NJ=$4
+
+VPIC_ROOT=$PWD
+
+export VPIC_DIR=$VPIC_ROOT/build/$ARCH/vpic
+
+##########################################################################################
+# Switch to the build directory and copy the VPIC source.  First check for the
+# existence of an old VPIC directory and remove it if it does exist.
+
+cd build
+
+if [ -d $ARCH ]
+then
+  rm -rf $ARCH
+fi
+
+mkdir $ARCH
+cd $ARCH
+
+cp -R $VPIC_ROOT/src/branches/$BRANCH/vpic .
+
+cd $VPIC_DIR
+
+##########################################################################################
+# Execute some module commands which apply to all ARCH values.
+
+echo '#!/bin/bash' >> bashrc.modules
+echo '' >> bashrc.modules
+
+module load friendly-testing
+echo "module load friendly-testing" >> bashrc.modules
+
+module load sandbox
+echo "module load sandbox" >> bashrc.modules
+
+module load cmake
+echo "module load cmake" >> bashrc.modules
+
+if [ ! "x$VERSION_CMAKE" = "x" ]
+then
+    module swap cmake cmake/$VERSION_CMAKE
+    echo "module swap cmake cmake/$VERSION_CMAKE" >> bashrc.modules
+fi
+
+module unload craype-hugepages2M
+echo "module unload craype-hugepages2M" >> bashrc.modules
+
+##########################################################################################
+# Inspect the ARCH and FEAT variables to determine what kind of build we are doing.
+
+################################################################################
+# Figure out which compiler to use.
+
+VCOM="ZZZ"
+
+VPIC_COMPILER_C="cc"
+VPIC_COMPILER_CXX="CC"
+
+if echo $ARCH | grep -q "CCE"
+then
+    VCOM="CCE"
+
+    if [ ! "x$VERSION_CCE" = "x" ]
+    then
+        module swap cce cce/$VERSION_CCE
+        echo "module swap cce cce/$VERSION_CCE" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-O2 -hlist=ad -hipa5"
+    FLAGS_C_COMPILER+=" -rdynamic -dynamic"
+
+    FLAGS_CXX_COMPILER="-O2 -hlist=ad -hipa5"
+    FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+fi
+
+if echo $ARCH | grep -q "GNU"
+then
+    VCOM="GNU"
+
+    module swap PrgEnv-cray PrgEnv-gnu
+    echo "module swap PrgEnv-cray PrgEnv-gnu" >> bashrc.modules
+
+    if [ ! "x$VERSION_GNU" = "x" ]
+    then
+        module swap gcc gcc/$VERSION_GNU
+        echo "module swap gcc gcc/$VERSION_GNU" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    FLAGS_C_COMPILER+=" -fno-strict-aliasing"
+    FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
+    FLAGS_C_COMPILER+=" -Winline"
+    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_C_COMPILER+=" -rdynamic -dynamic"
+
+    FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
+    FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
+    FLAGS_CXX_COMPILER+=" -Winline"
+    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+fi
+
+if echo $ARCH | grep -q "ARM"
+then
+    VCOM="ARM"
+
+    module swap PrgEnv-cray PrgEnv-allinea
+    echo "module swap PrgEnv-cray PrgEnv-allinea" >> bashrc.modules
+
+    if [ ! "x$VERSION_GNU" = "x" ]
+    then
+        module swap allinea allinea/$VERSION_GNU
+        echo "module swap allinea allinea/$VERSION_GNU" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O2"
+    #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_C_COMPILER+=" -Winline"
+    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
+
+    FLAGS_CXX_COMPILER="-g -O2"
+    #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
+    #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
+    #FLAGS_CXX_COMPILER+=" -Winline"
+    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+fi
+
+################################################################################
+# Figure out which MPI library to use.
+
+VMPI="ZZZ"
+
+if echo $ARCH | grep -q "CMPI"
+then
+    VMPI="CMPI"
+
+    if [ ! "x$VERSION_CRAY_MPICH" = "x" ]
+    then
+        module swap cray-mpich cray-mpich/$VERSION_CRAY_MPICH
+        echo "module swap cray-mpich cray-mpich/$VERSION_CRAY_MPICH" >> bashrc.modules
+    fi
+
+    export MPI_ROOT=$MPICH_DIR
+fi
+
+if echo $ARCH | grep -q "OMPI"
+then
+    VMPI="OMPI"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    module unload cray-mpich
+    echo "module unload cray-mpich" >> bashrc.modules
+
+    module unload cray-libsci
+    echo "module unload cray-libsci" >> bashrc.modules
+
+    module load openmpi
+    echo "module load openmpi" >> bashrc.modules
+
+    if [ ! "x$VERSION_OPENMPI" = "x" ]
+    then
+        module swap openmpi openmpi/$VERSION_OPENMPI
+        echo "module swap openmpi openmpi/$VERSION_OPENMPI" >> bashrc.modules
+    fi
+fi
+
+################################################################################
+# Figure out which thread model to use.
+
+VTHR="ZZZ"
+
+if echo $ARCH | grep -q "_PTH_"
+then
+    VTHR="PTH"
+
+    SET_OPENMP="OFF"
+    SET_PTHREADS="ON"
+fi
+
+if echo $ARCH | grep -q "_OMP_"
+then
+    VTHR="OMP"
+
+    SET_OPENMP="ON"
+    SET_PTHREADS="OFF"
+fi
+
+################################################################################
+# Figure out if this is an optimized or debug build.
+
+VOPT="ZZZ"
+
+if echo $ARCH | grep -q "OPT"
+then
+    VOPT="OPT"
+fi
+
+if echo $ARCH | grep -q "DBG"
+then
+    VOPT="DBG"
+fi
+
+################################################################################
+# Figure out which particle sort implementation to use.
+
+if echo $ARCH | grep -q "LSORT"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
+fi
+
+################################################################################
+# Figure out if we are using AoSoA data format for particles.
+
+if echo $ARCH | grep -q "AOSOA"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    if echo $ARCH | egrep -q "_DBG_V4_|_OPT_V4_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+    fi
+fi
+
+################################################################################
+# Figure out if this is a MAP build.
+
+SET_SHARED_LIBS="OFF"
+
+if echo $ARCH | grep -q "MAP"
+then
+    SET_SHARED_LIBS="ON"
+
+    module load forge
+    echo "module load forge" >> bashrc.modules
+
+    if [ ! "x$VERSION_FORGE" = "x" ]
+    then
+        module swap forge forge/$VERSION_FORGE
+        echo "module swap forge forge/$VERSION_FORGE" >> bashrc.modules
+    fi
+fi
+
+################################################################################
+# Figure out if this is a GPROF build.
+
+if echo $ARCH | grep -q "GPROF"
+then
+    if echo $ARCH | grep -q "CCE"
+    then
+	FLAGS_C_COMPILER+=" -pg"
+
+	FLAGS_CXX_COMPILER+=" -pg"
+    fi
+
+    if echo $ARCH | grep -q "ARM"
+    then
+	FLAGS_C_COMPILER+=" -p"
+
+	FLAGS_CXX_COMPILER+=" -p"
+    fi
+
+    if echo $ARCH | grep -q "GNU"
+    then
+	FLAGS_C_COMPILER+=" -pg"
+
+	FLAGS_CXX_COMPILER+=" -pg"
+    fi
+fi
+
+################################################################################
+# Figure out if this is a CrayPat build.
+
+if echo $ARCH | grep -q "CPAT"
+then
+    if [ ! "x$VERSION_CRAY_PERF_TOOLS" = "x" ]
+    then
+        module swap perftools-base perftools-base/$VERSION_CRAY_PERF_TOOLS
+        echo "module swap perftools-base perftools-base/$VERSION_CRAY_PERF_TOOLS" >> bashrc.modules
+    fi
+
+    if echo $ARCH | grep -q "CPAT_LITE"
+    then
+        if echo $ARCH | grep -q "CPAT_LITE_LOOPS"
+        then
+            module load perftools-lite-loops
+            echo "module load perftools-lite-loops" >> bashrc.modules
+        elif echo $ARCH | grep -q "CPAT_LITE_HBM"
+        then
+	    SET_SHARED_LIBS="ON"
+
+            #FLAGS_LD="-dynamic"
+
+            module load perftools-lite-hbm
+            echo "module load perftools-lite-hbm" >> bashrc.modules
+        else
+            module load perftools-lite
+            echo "module load perftools-lite" >> bashrc.modules
+        fi
+    else
+       module load perftools
+       echo "module load perftools" >> bashrc.modules
+    fi
+fi
+
+##########################################################################################
+# Now, perform the selected build.
+
+##########################################################################################
+# Build an optimized version of VPIC.
+
+if [ $ARCH = "CAPULIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC.
+
+if [ $ARCH = "CAPULIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC.
+
+if [ $ARCH = "CAPULIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_NEON${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_NEON=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC.
+
+if [ $ARCH = "CAPULIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT{FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DUSE_V8_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC.
+
+if [ $ARCH = "CAPULIN_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DUSE_V8_PORTABLE=ON \
+	-DUSE_V16_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Done.

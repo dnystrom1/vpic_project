@@ -161,6 +161,29 @@ chmod +x makeVPIC_kodiak makeVPIC_kodiak_cases
 fi
 
 #---------------------------------------------------------------------------------#
+# Create build scripts for Cray ARM machines i.e. Capulin, etc.
+#---------------------------------------------------------------------------------#
+
+if [ $MCAT == "arm" ] || [ $MCAT == "ARM" ]
+then
+
+update='
+s/REPLACE_lcase/'capulin'/
+s/REPLACE_lcase/'capulin'/
+s/REPLACE_ucase/'CAPULIN'/
+s/REPLACE_mcase/'Capulin'/
+s/REPLACE_abrev/'CP'/
+'
+
+cat template_makeVPIC_arm | sed -e "$update" >& makeVPIC_capulin
+
+cat template_makeVPIC_arm_cases | sed -e "$update" >& makeVPIC_capulin_cases
+
+chmod +x makeVPIC_capulin makeVPIC_capulin_cases
+
+fi
+
+#---------------------------------------------------------------------------------#
 # Create build scripts for TLCC machines.
 #---------------------------------------------------------------------------------#
 
