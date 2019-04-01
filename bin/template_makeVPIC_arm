@@ -441,7 +441,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC.
 
-if [ $ARCH = "REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT{FEAT}" ]
+if [ $ARCH = "REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
