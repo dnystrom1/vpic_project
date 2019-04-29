@@ -329,6 +329,35 @@ then
     #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
 fi
 
+if echo $ARCH | egrep -q "ARM_OPT|ARM_DBG"
+then
+    VCOM="ARM"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    if [ ! "x$VERSION_ARM_TX2" = "x" ]
+    then
+        module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2
+        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/$VERSION_ARM_TX2" >> bashrc.modules
+    else
+        module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0
+        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O3"
+
+    FLAGS_CXX_COMPILER="-g -O3"
+
+    # Build with SVE support to use with ARMIE.
+    if echo $ARCH | grep -q "SVE"
+    then
+        FLAGS_C_COMPILER+=" --march=armv8+sve"
+
+        FLAGS_CXX_COMPILER+=" --march=armv8+sve"
+    fi
+fi
+
 ################################################################################
 # Figure out which MPI library to use.
 

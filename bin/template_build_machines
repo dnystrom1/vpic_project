@@ -161,7 +161,7 @@ chmod +x makeVPIC_kodiak makeVPIC_kodiak_cases
 fi
 
 #---------------------------------------------------------------------------------#
-# Create build scripts for Cray ARM machines i.e. Capulin, etc.
+# Create build scripts for Cray ARM machines i.e. Capulin, Thunder, etc.
 #---------------------------------------------------------------------------------#
 
 if [ $MCAT == "arm" ] || [ $MCAT == "ARM" ]
@@ -180,6 +180,20 @@ cat template_makeVPIC_arm | sed -e "$update" >& makeVPIC_capulin
 cat template_makeVPIC_arm_cases | sed -e "$update" >& makeVPIC_capulin_cases
 
 chmod +x makeVPIC_capulin makeVPIC_capulin_cases
+
+update='
+s/REPLACE_lcase/'thunder'/
+s/REPLACE_lcase/'thunder'/
+s/REPLACE_ucase/'THUNDER'/
+s/REPLACE_mcase/'Thunder'/
+s/REPLACE_abrev/'TH'/
+'
+
+cat template_makeVPIC_arm | sed -e "$update" >& makeVPIC_thunder
+
+cat template_makeVPIC_arm_cases | sed -e "$update" >& makeVPIC_thunder_cases
+
+chmod +x makeVPIC_thunder makeVPIC_thunder_cases
 
 fi
 

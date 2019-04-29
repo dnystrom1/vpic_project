@@ -14,6 +14,7 @@ vtime="/usr/bin/time -p"
 #export VERSION_GNU=6.4.0
 #export VERSION_IBM=xlc-16.1.0-xlf-16.1.0
 #export VERSION_PGI=18.4
+#export VERSION_ARM_TX2=19.0/armpl/19.0.0
 
 #export VERSION_OPEN_MPI=1.10.5
 #export VERSION_INTEL_MPI=2018.2
@@ -48,6 +49,7 @@ VTHR="PTH"
 VCOM="INT"
 #VCOM="IBM"
 #VCOM="PGI"
+#VCOM="ARM"
 
 ################################################################################
 # Select an optimized or debug build.
