@@ -104,62 +104,79 @@ FEAT+="_COM_FLAGS_00"
 # Build ARCHs.
 
 ################################################################################
-# Build the optimized Intel case for the master branch without vector support.
+# Build optimized case for devel_wdn branch without vector support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
-BRANCH=knl_open_science
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ################################################################################
-# Build the optimized Intel cases for the master branch with V4 support.
+# Build optimized portable case for devel_wdn branch with V4 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
-BRANCH=knl_open_science
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
+################################################################################
+# Build optimized Intel cases for devel_wdn branch with V4 support.
+
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
-BRANCH=knl_open_science
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
-BRANCH=knl_open_science
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ################################################################################
-# Build the optimized Intel cases for the master branch with V8 support.
-
-ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
-BRANCH=knl_open_science
-${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
-mv makeVPIC_darwin.log build/$ARCH/vpic
-
-ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
-BRANCH=knl_open_science
-${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
-mv makeVPIC_darwin.log build/$ARCH/vpic
-
-################################################################################
-# Build the optimized Intel case for the master branch with V16 support.
-
-ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
-BRANCH=knl_open_science
-${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
-mv makeVPIC_darwin.log build/$ARCH/vpic
-
-ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
-BRANCH=knl_open_science
-${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
-mv makeVPIC_darwin.log build/$ARCH/vpic
-
-################################################################################
-# Build the optimized IBM cases for the master branch with V4 support.
+# Build optimized IBM case for devel_wdn branch with V4 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_ALTIVEC${FEAT}
-BRANCH=knl_open_science
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized ARM case for devel_wdn branch with V4 NEON support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_NEON${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized portable case for devel_wdn branch with V8 support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized Intel case for devel_wdn branch with V8 support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized portable case for devel_wdn branch with V16 support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized Intel case for devel_wdn branch with V16 support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
