@@ -203,11 +203,11 @@ then
         #FLAGS_C_COMPILER+=" -mtune=power9"
     fi
 
-    if echo $ARCH | egrep -q "ARM_TX2"
-    then
-        FLAGS_C_COMPILER+=" -mcpu=native"
-        FLAGS_C_COMPILER+=" -mtune=native"
-    fi
+    #if echo $ARCH | egrep -q "ARM_TX2"
+    #then
+    #    FLAGS_C_COMPILER+=" -mcpu=native"
+    #    FLAGS_C_COMPILER+=" -mtune=native"
+    #fi
 
     #FLAGS_CXX_COMPILER="-g -O2"
     FLAGS_CXX_COMPILER="-g -Ofast"
