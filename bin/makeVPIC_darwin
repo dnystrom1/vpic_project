@@ -353,7 +353,7 @@ then
     if [ ! "x$VERSION_ARM_TX2" = "x" ]
     then
         module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2
-        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/$VERSION_ARM_TX2" >> bashrc.modules
+        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2" >> bashrc.modules
     else
         module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0
         echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0" >> bashrc.modules
