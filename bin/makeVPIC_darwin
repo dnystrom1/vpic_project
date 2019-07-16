@@ -171,13 +171,25 @@ then
     VPIC_COMPILER_C="mpicc"
     VPIC_COMPILER_CXX="mpicxx"
 
-    if [ ! "x$VERSION_GNU" = "x" ]
+    if echo $ARCH | egrep -q "ARM_TX2"
     then
-        module load gcc/$VERSION_GNU
-        echo "module load gcc/$VERSION_GNU" >> bashrc.modules
+        if [ ! "x$VERSION_GNU" = "x" ]
+        then
+            module load ThunderX2CN99/RHEL/7/gcc-$VERSION_GNU_ARM
+            echo "module load ThunderX2CN99/RHEL/7/gcc-$VERSION_GNU_ARM" >> bashrc.modules
+        else
+            module load ThunderX2CN99/RHEL/7/gcc-8.2.0/armpl/19.1.0
+            echo "module load ThunderX2CN99/RHEL/7/gcc-8.2.0/armpl/19.1.0" >> bashrc.modules
+        fi
     else
-        module load gcc
-        echo "module load gcc" >> bashrc.modules
+        if [ ! "x$VERSION_GNU" = "x" ]
+        then
+            module load gcc/$VERSION_GNU
+            echo "module load gcc/$VERSION_GNU" >> bashrc.modules
+        else
+            module load gcc
+            echo "module load gcc" >> bashrc.modules
+        fi
     fi
 
     #FLAGS_C_COMPILER="-g -O2"
@@ -203,12 +215,12 @@ then
         #FLAGS_C_COMPILER+=" -mtune=power9"
     fi
 
-    if echo $ARCH | egrep -q "ARM_TX2"
-    then
-        FLAGS_C_COMPILER+=" -march=native"
+    #if echo $ARCH | egrep -q "ARM_TX2"
+    #then
+    #    FLAGS_C_COMPILER+=" -march=native"
     #    FLAGS_C_COMPILER+=" -mcpu=native"
     #    FLAGS_C_COMPILER+=" -mtune=native"
-    fi
+    #fi
 
     #FLAGS_CXX_COMPILER="-g -O2"
     FLAGS_CXX_COMPILER="-g -Ofast"
@@ -234,12 +246,12 @@ then
         #FLAGS_CXX_COMPILER+=" -mtune=power9"
     fi
 
-    if echo $ARCH | egrep -q "ARM_TX2"
-    then
-        FLAGS_CXX_COMPILER+=" -march=native"
+    #if echo $ARCH | egrep -q "ARM_TX2"
+    #then
+    #    FLAGS_CXX_COMPILER+=" -march=native"
     #    FLAGS_CXX_COMPILER+=" -mcpu=native"
     #    FLAGS_CXX_COMPILER+=" -mtune=native"
-    fi
+    #fi
 fi
 
 if echo $ARCH | egrep -q "CLG_OPT|CLG_DBG"
