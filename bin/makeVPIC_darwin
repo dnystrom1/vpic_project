@@ -215,12 +215,13 @@ then
         #FLAGS_C_COMPILER+=" -mtune=power9"
     fi
 
-    #if echo $ARCH | egrep -q "ARM_TX2"
-    #then
+    if echo $ARCH | egrep -q "ARM_TX2"
+    then
+        FLAGS_C_COMPILER+=" -mfpu=neon"
     #    FLAGS_C_COMPILER+=" -march=native"
     #    FLAGS_C_COMPILER+=" -mcpu=native"
     #    FLAGS_C_COMPILER+=" -mtune=native"
-    #fi
+    fi
 
     #FLAGS_CXX_COMPILER="-g -O2"
     FLAGS_CXX_COMPILER="-g -Ofast"
@@ -246,12 +247,13 @@ then
         #FLAGS_CXX_COMPILER+=" -mtune=power9"
     fi
 
-    #if echo $ARCH | egrep -q "ARM_TX2"
-    #then
+    if echo $ARCH | egrep -q "ARM_TX2"
+    then
+        FLAGS_CXX_COMPILER+=" -mfpu=neon"
     #    FLAGS_CXX_COMPILER+=" -march=native"
     #    FLAGS_CXX_COMPILER+=" -mcpu=native"
     #    FLAGS_CXX_COMPILER+=" -mtune=native"
-    #fi
+    fi
 fi
 
 if echo $ARCH | egrep -q "CLG_OPT|CLG_DBG"
