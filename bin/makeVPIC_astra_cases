@@ -1,0 +1,127 @@
+#!/bin/bash
+
+################################################################################
+# Preliminary stuff.
+
+NJ=32
+
+vtime="/usr/bin/time -p"
+
+##########################################################################################
+# Allow for customization of module versions.  Uncomment and set as needed.
+
+#export VERSION_INTEL=18.0.1
+#export VERSION_GNU=6.4.0
+
+#export VERSION_OPEN_MPI=1.10.5
+#export VERSION_INTEL_MPI=2018.2
+
+#export VERSION_INTEL_VTUNE_AMPLIFIER=2018.2.0
+#export VERSION_INTEL_VECTOR_ADVISOR=2018.2.0
+#export VERSION_INTEL_INSPECTOR=2018.2.0
+#export VERSION_INTEL_TRACE_ANALYZER=2018.2.020
+
+#export VERSION_FORGE=18.1.1
+
+##########################################################################################
+# Configure parameters that determine the value of the ARCH to be built.
+
+################################################################################
+# Select an MPI implementation to use.
+
+VMPI="OMPI"
+#VMPI="IMPI"
+
+################################################################################
+# Select a thread model to use.
+
+VTHR="PTH"
+#VTHR="OMP"
+
+################################################################################
+# Select the compiler to use.
+
+VCOM="INT"
+#VCOM="GNU"
+
+################################################################################
+# Select an optimized or debug build.
+
+VOPT="OPT"
+#VOPT="DBG"
+
+################################################################################
+# Select extra features to use. More than one can be selected.
+
+FEAT+="_LSORT"
+#FEAT+="_TSORT"
+
+#FEAT+="_HIO"
+
+FEAT+="_COM_FLAGS_00"
+#FEAT+="_COM_FLAGS_01"
+#FEAT+="_COM_FLAGS_02"
+#FEAT+="_COM_FLAGS_03"
+
+#FEAT+="_VTUNE"
+#FEAT+="_MAP"
+#FEAT+="_GPROF"
+
+#FEAT+="_TEST"
+#FEAT+=""
+#FEAT+=""
+#FEAT+=""
+#FEAT+=""
+
+##########################################################################################
+# Build ARCHs.
+
+################################################################################
+# Build the optimized Intel case for the master branch without vector support.
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+################################################################################
+# Build the optimized Intel cases for the master branch with V4 support.
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+################################################################################
+# Build the optimized Intel cases for the master branch with V8 support.
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+################################################################################
+# Build the optimized Intel case for the master branch with V16 support.
+
+ARCH=SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_snow $ARCH $FEAT $BRANCH $NJ >& makeVPIC_snow.log
+mv makeVPIC_snow.log build/$ARCH/vpic
+
+##########################################################################################
+# Done.

@@ -1,0 +1,593 @@
+#!/bin/bash
+
+#set -x
+
+##########################################################################################
+# Set some high level variables.
+
+ARCH=$1
+
+FEAT=$2
+
+BRANCH=$3
+
+NJ=$4
+
+VPIC_ROOT=$PWD
+
+export VPIC_DIR=$VPIC_ROOT/build/$ARCH/vpic
+
+##########################################################################################
+# Switch to the build directory and copy the VPIC source.  First check for the
+# existence of an old VPIC directory and remove it if it does exist.
+
+cd build
+
+if [ -d $ARCH ]
+then
+  rm -rf $ARCH
+fi
+
+mkdir $ARCH
+cd $ARCH
+
+cp -R $VPIC_ROOT/src/branches/$BRANCH/vpic .
+
+cd $VPIC_DIR
+
+##########################################################################################
+# Execute some module commands which apply to all ARCH values.
+
+echo '#!/bin/bash' >> bashrc.modules
+echo '' >> bashrc.modules
+
+module purge
+echo "module purge" >> bashrc.modules
+
+module load friendly-testing
+echo "module load friendly-testing" >> bashrc.modules
+
+module load sandbox
+echo "module load sandbox" >> bashrc.modules
+
+if [ ! "x$VERSION_CMAKE" = "x" ]
+then
+    module load cmake/$VERSION_CMAKE
+    echo "module load cmake/$VERSION_CMAKE" >> bashrc.modules
+else
+    module load cmake
+    echo "module load cmake" >> bashrc.modules
+fi
+
+if [ ! "x$VERSION_GIT" = "x" ]
+then
+    module load git/$VERSION_GIT
+    echo "module load git/$VERSION_GIT" >> bashrc.modules
+else
+    module load git
+    echo "module load git" >> bashrc.modules
+fi
+
+##########################################################################################
+# Inspect the ARCH and FEAT variables to determine what kind of build we are doing.
+
+################################################################################
+# Figure out which compiler to use.
+
+VCOM="ZZZ"
+
+VPIC_COMPILER_C="mpicc"
+VPIC_COMPILER_CXX="mpicxx"
+
+if echo $ARCH | grep -q "INT"
+then
+    VCOM="INT"
+
+    if [ ! "x$VERSION_INTEL" = "x" ]
+    then
+        module load intel/$VERSION_INTEL
+        echo "module load intel/$VERSION_INTEL" >> bashrc.modules
+    else
+        module load intel
+        echo "module load intel" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O3"
+    FLAGS_C_COMPILER+=" -inline-forceinline -vec-threshold0"
+    FLAGS_C_COMPILER+=" -qoverride-limits"
+    FLAGS_C_COMPILER+=" -no-ansi-alias"
+    FLAGS_C_COMPILER+=" -Wl,--export-dynamic"
+    FLAGS_C_COMPILER+=" -Winline"
+    FLAGS_C_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_C_COMPILER+=" -diag-disable 10397"
+
+    FLAGS_CXX_COMPILER="-g -O3"
+    FLAGS_CXX_COMPILER+=" -inline-forceinline -vec-threshold0"
+    FLAGS_CXX_COMPILER+=" -qoverride-limits"
+    FLAGS_CXX_COMPILER+=" -no-ansi-alias"
+    FLAGS_CXX_COMPILER+=" -Wl,--export-dynamic"
+    FLAGS_CXX_COMPILER+=" -Winline"
+    FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
+    FLAGS_CXX_COMPILER+=" -diag-disable 10397"
+fi
+
+if echo $ARCH | grep -q "GNU"
+then
+    VCOM="GNU"
+
+    if [ ! "x$VERSION_GNU" = "x" ]
+    then
+        module load gcc/$VERSION_GNU
+        echo "module load gcc/$VERSION_GNU" >> bashrc.modules
+    else
+        module load gcc
+        echo "module load gcc" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER+=" -mavx2 -mfma"
+    FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    FLAGS_C_COMPILER+=" -fno-strict-aliasing"
+    FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
+    FLAGS_C_COMPILER+=" -rdynamic"
+    FLAGS_C_COMPILER+=" -Winline"
+    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+
+    FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER+=" -mavx2 -mfma"
+    FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
+    FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
+    FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
+    FLAGS_CXX_COMPILER+=" -rdynamic"
+    FLAGS_CXX_COMPILER+=" -Winline"
+    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+fi
+
+################################################################################
+# Figure out which MPI library to use.
+
+VMPI="ZZZ"
+
+if echo $ARCH | grep -q "OMPI"
+then
+    VMPI="OMPI"
+
+    if [ ! "x$VERSION_OPEN_MPI" = "x" ]
+    then
+        module load openmpi/$VERSION_OPEN_MPI
+        echo "module load openmpi/$VERSION_OPEN_MPI" >> bashrc.modules
+    else
+        module load openmpi
+        echo "module load openmpi" >> bashrc.modules
+    fi
+fi
+
+if echo $ARCH | grep -q "IMPI"
+then
+    VMPI="IMPI"
+
+    VPIC_COMPILER_C="mpiicc"
+    VPIC_COMPILER_CXX="mpiicpc"
+
+    if [ ! "x$VERSION_INTEL_MPI" = "x" ]
+    then
+        module load intel-mpi/$VERSION_INTEL_MPI
+        echo "module load intel-mpi/$VERSION_INTEL_MPI" >> bashrc.modules
+    else
+        module load intel-mpi
+        echo "module load intel-mpi" >> bashrc.modules
+    fi
+fi
+
+################################################################################
+# Figure out which thread model to use.
+
+VTHR="ZZZ"
+
+if echo $ARCH | grep -q "_PTH_"
+then
+    VTHR="PTH"
+
+    SET_OPENMP="OFF"
+    SET_PTHREADS="ON"
+fi
+
+if echo $ARCH | grep -q "_OMP_"
+then
+    VTHR="OMP"
+
+    SET_OPENMP="ON"
+    SET_PTHREADS="OFF"
+fi
+
+################################################################################
+# Figure out if this is an optimized or debug build.
+
+VOPT="ZZZ"
+
+if echo $ARCH | grep -q "OPT"
+then
+    VOPT="OPT"
+fi
+
+if echo $ARCH | grep -q "DBG"
+then
+    VOPT="DBG"
+fi
+
+################################################################################
+# Figure out which particle sort implementation to use.
+
+if echo $ARCH | grep -q "LSORT"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
+fi
+
+################################################################################
+# Figure out if we are using AoSoA data format for particles.
+
+if echo $ARCH | grep -q "AOSOA"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_AOSOA_P"
+
+    if echo $ARCH | egrep -q "_DBG_V4_|_OPT_V4_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+    fi
+fi
+
+################################################################################
+# Figure out if we are using check points without reverse symbol table lookup
+# support.
+
+if echo $ARCH | grep -q "QRST"
+then
+    FLAGS_C_COMPILER+=" -DNO_REVERSE_SYMBOL_TABLE_LOOKUP_SUPPORT"
+
+    FLAGS_CXX_COMPILER+=" -DNO_REVERSE_SYMBOL_TABLE_LOOKUP_SUPPORT"
+fi
+
+################################################################################
+# Figure out if this is a VTUNE build.
+
+SET_SHARED_LIBS="OFF"
+
+if echo $ARCH | grep -q "VTUNE"
+then
+    SET_SHARED_LIBS="ON"
+
+    #FLAGS_C_COMPILER+=" -DVPIC_USE_VTUNE_ADVANCE_P"
+    #FLAGS_C_COMPILER+=" -DVPIC_USE_VTUNE_ADVANCE"
+    FLAGS_C_COMPILER+=" -DVPIC_USE_VTUNE_OFF"
+    FLAGS_C_COMPILER+=" -I$VTUNE_AMPLIFIER_XE_2017_DIR/include"
+
+    #FLAGS_CXX_COMPILER+=" -DVPIC_USE_VTUNE_ADVANCE_P"
+    #FLAGS_CXX_COMPILER+=" -DVPIC_USE_VTUNE_ADVANCE"
+    FLAGS_CXX_COMPILER+=" -DVPIC_USE_VTUNE_OFF"
+    FLAGS_CXX_COMPILER+=" -I$VTUNE_AMPLIFIER_XE_2017_DIR/include"
+
+    if [ ! "x$VERSION_INTEL_VTUNE_AMPLIFIER" = "x" ]
+    then
+        module load intel-vtune-amplifier/$VERSION_INTEL_VTUNE_AMPLIFIER
+        echo "module load intel-vtune-amplifier/$VERSION_INTEL_VTUNE_AMPLIFIER" >> bashrc.modules
+    else
+	module load intel-vtune-amplifier
+	echo "module load intel-vtune-amplifier" >> bashrc.modules
+    fi
+
+    if [ ! "x$VERSION_INTEL_VECTOR_ADVISOR" = "x" ]
+    then
+        module load intel-advisor/$VERSION_INTEL_VECTOR_ADVISOR
+        echo "module load intel-advisor/$VERSION_INTEL_VECTOR_ADVISOR" >> bashrc.modules
+    else
+	module load intel-advisor
+	echo "module load intel-advisor" >> bashrc.modules
+    fi
+
+    if [ ! "x$VERSION_INTEL_INSPECTOR" = "x" ]
+    then
+        module load intel-inspector/$VERSION_INTEL_INSPECTOR
+        echo "module load intel-inspector/$VERSION_INTEL_INSPECTOR" >> bashrc.modules
+    else
+	module load intel-inspector
+	echo "module load intel-inspector" >> bashrc.modules
+    fi
+
+    if [ ! "x$VERSION_INTEL_TRACE_ANALYZER" = "x" ]
+    then
+        module load intel-trace-analyzer/$VERSION_INTEL_TRACE_ANALYZER
+        echo "module load intel-trace-analyzer/$VERSION_INTEL_TRACE_ANALYZER" >> bashrc.modules
+    else
+	module load intel-trace-analyzer
+	echo "module load intel-trace-analyzer" >> bashrc.modules
+    fi
+
+    if echo $ARCH | grep -q "INT"
+    then
+	FLAGS_C_COMPILER+=" -debug inline-debug-info"
+	FLAGS_C_COMPILER+=" -parallel-source-info=2"
+
+	FLAGS_CXX_COMPILER+=" -debug inline-debug-info"
+	FLAGS_CXX_COMPILER+=" -parallel-source-info=2"
+    fi
+fi
+
+################################################################################
+# Figure out if this is a MAP build.
+
+if echo $ARCH | grep -q "MAP"
+then
+    SET_SHARED_LIBS="ON"
+
+    if [ ! "x$VERSION_FORGE" = "x" ]
+    then
+        module load forge/$VERSION_FORGE
+        echo "module load forge/$VERSION_FORGE" >> bashrc.modules
+    else
+	module load forge
+	echo "module load forge" >> bashrc.modules
+    fi
+fi
+
+################################################################################
+# Figure out if this is a GPROF build.
+
+if echo $ARCH | grep -q "GPROF"
+then
+    if echo $ARCH | grep -q "INT"
+    then
+	FLAGS_C_COMPILER+=" -p"
+
+	FLAGS_CXX_COMPILER+=" -p"
+    fi
+
+    if echo $ARCH | grep -q "GNU"
+    then
+	FLAGS_C_COMPILER+=" -pg"
+
+	FLAGS_CXX_COMPILER+=" -pg"
+    fi
+fi
+
+##########################################################################################
+# Now, perform the selected build.
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_SSE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_AVX2=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DUSE_V8_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_AVX2=ON \
+	-DUSE_V8_AVX2=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "SNOW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_PORTABLE=ON \
+	-DUSE_V8_PORTABLE=ON \
+	-DUSE_V16_PORTABLE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
