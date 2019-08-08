@@ -32,6 +32,8 @@ fi
 ##############################################################################################################################################
 # Preliminary stuff.
 
+arm_tpc=1
+
 vtime=''
 
 #voc='--vm-overcommit=enable'
@@ -135,9 +137,7 @@ cpu_bind_rpc1_01="--cpu_bind=map_cpu:${cpu_list_rpc1_01_socket_0}"
 # Large DDR problem, strong scaled across 1 node.
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 4 threads/rank.
-
-export OMP_NUM_THREADS=4
+# MPI + Pthreads, 1 rank/core, 4 threads/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_056_ntpp_004.Linux --tpp 4 >& ${prob}_ddr_nn_0001_nppn_056_ntpp_004.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_032_ntpp_004.Linux --tpp 4 >& ${prob}_ddr_nn_0001_nppn_032_ntpp_004.log
@@ -148,9 +148,7 @@ ${aprun} -n  2 -N 1 ${cpu_bind_rpc1_02} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_00
 ${aprun} -n  1 -N 1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_001_ntpp_004.Linux --tpp 4 >& ${prob}_ddr_nn_0001_nppn_001_ntpp_004.log
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 2 threads/rank.
-
-export OMP_NUM_THREADS=2
+# MPI + Pthreads, 1 rank/core, 2 threads/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_056_ntpp_002.Linux --tpp 2 >& ${prob}_ddr_nn_0001_nppn_056_ntpp_002.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_032_ntpp_002.Linux --tpp 2 >& ${prob}_ddr_nn_0001_nppn_032_ntpp_002.log
@@ -161,9 +159,7 @@ ${aprun} -n  2 -N 1 ${cpu_bind_rpc1_02} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_00
 ${aprun} -n  1 -N 1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_001_ntpp_002.Linux --tpp 2 >& ${prob}_ddr_nn_0001_nppn_001_ntpp_002.log
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 1 thread/rank.
-
-export OMP_NUM_THREADS=1
+# MPI + Pthreads, 1 rank/core, 1 thread/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_056_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_056_ntpp_001.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_ddr_nn_0001_nppn_032_ntpp_001.log
@@ -177,9 +173,7 @@ ${aprun} -n  1 -N 1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_ddr_nn_00
 # Small HBM problem, strong scaled across 1 node.
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 4 threads/rank.
-
-export OMP_NUM_THREADS=4
+# MPI + Pthreads, 1 rank/core, 4 threads/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_056_ntpp_004.Linux --tpp 4 >& ${prob}_hbm_nn_0001_nppn_056_ntpp_004.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_032_ntpp_004.Linux --tpp 4 >& ${prob}_hbm_nn_0001_nppn_032_ntpp_004.log
@@ -190,9 +184,7 @@ ${aprun} -n  2 -N 1 ${cpu_bind_rpc1_02} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_00
 ${aprun} -n  1 -N 1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_001_ntpp_004.Linux --tpp 4 >& ${prob}_hbm_nn_0001_nppn_001_ntpp_004.log
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 2 threads/rank.
-
-export OMP_NUM_THREADS=2
+# MPI + Pthreads, 1 rank/core, 2 threads/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_056_ntpp_002.Linux --tpp 2 >& ${prob}_hbm_nn_0001_nppn_056_ntpp_002.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_032_ntpp_002.Linux --tpp 2 >& ${prob}_hbm_nn_0001_nppn_032_ntpp_002.log
@@ -203,9 +195,7 @@ ${aprun} -n  2 -N 1 ${cpu_bind_rpc1_02} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_00
 ${aprun} -n  1 -N 1 ${cpu_bind_rpc1_01} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_001_ntpp_002.Linux --tpp 2 >& ${prob}_hbm_nn_0001_nppn_001_ntpp_002.log
 
 ##############################################################################################################################################
-# MPI + OpenMP, 1 rank/core, 1 thread/rank.
-
-export OMP_NUM_THREADS=1
+# MPI + Pthreads, 1 rank/core, 1 thread/rank.
 
 ${aprun} -n 56 -N 1 ${cpu_bind_rpc1_56} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_056_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_056_ntpp_001.log
 ${aprun} -n 32 -N 1 ${cpu_bind_rpc1_32} ${voc} ${vtime} ${xpre}${prob}_hbm_nn_0001_nppn_032_ntpp_001.Linux --tpp 1 >& ${prob}_hbm_nn_0001_nppn_032_ntpp_001.log

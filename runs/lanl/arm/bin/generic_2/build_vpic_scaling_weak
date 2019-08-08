@@ -1,0 +1,92 @@
+#!/bin/bash
+
+#######################################################################
+# Configure modules.
+
+source bashrc.modules
+
+#######################################################################
+# Figure out problem being run based on value of PWD variable.
+
+if echo $PWD | grep -q "lpi"
+then
+    prob=lpi
+fi
+
+if echo $PWD | grep -q "lpi_sp"
+then
+    prob=lpi_sp
+fi
+
+if echo $PWD | grep -q "reconnection"
+then
+    prob=reconnection
+fi
+
+if [ "x$prob" = "x" ]
+then
+    echo "The prob bash variable is not set to a valid problem."
+    exit 1
+fi
+
+#######################################################################
+# Build executables for 4 ranks/core, 1 thread/rank i.e. MPI only case.
+
+./vpic ${prob}_ddr_nn_0001_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0002_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0004_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0008_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0016_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0032_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0064_nppn_224_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0128_nppn_224_ntpp_001.cxx
+
+#######################################################################
+# Build executables for 2 ranks/core, 1 thread/rank i.e. MPI only case.
+
+./vpic ${prob}_ddr_nn_0001_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0002_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0004_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0008_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0016_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0032_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0064_nppn_112_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0128_nppn_112_ntpp_001.cxx
+
+#######################################################################
+# Build executables for 1 rank/core, 1 thread/rank i.e. MPI only case.
+
+./vpic ${prob}_ddr_nn_0001_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0002_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0004_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0008_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0016_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0032_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0064_nppn_056_ntpp_001.cxx
+./vpic ${prob}_ddr_nn_0128_nppn_056_ntpp_001.cxx
+
+#######################################################################
+# Build executables for 1 rank/core, 2 threads/rank i.e. MPI +
+# threads case.
+
+./vpic ${prob}_ddr_nn_0001_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0002_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0004_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0008_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0016_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0032_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0064_nppn_056_ntpp_002.cxx
+./vpic ${prob}_ddr_nn_0128_nppn_056_ntpp_002.cxx
+
+#######################################################################
+# Build executables for 1 rank/core, 4 threads/rank i.e. MPI +
+# threads case.
+
+./vpic ${prob}_ddr_nn_0001_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0002_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0004_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0008_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0016_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0032_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0064_nppn_056_ntpp_004.cxx
+./vpic ${prob}_ddr_nn_0128_nppn_056_ntpp_004.cxx
