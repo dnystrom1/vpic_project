@@ -203,15 +203,16 @@ then
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
     then
-        FLAGS_C_COMPILER+=" -mcpu=native"
+        FLAGS_C_COMPILER+=" -march=native"
         FLAGS_C_COMPILER+=" -mtune=native"
+        FLAGS_C_COMPILER+=" -mdump-tune-features"
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"
     then
         FLAGS_C_COMPILER+=" -maltivec"
 
-        #FLAGS_C_COMPILER+=" -mcpu=power9"
+        #FLAGS_C_COMPILER+=" -march=power9"
         #FLAGS_C_COMPILER+=" -mtune=power9"
     fi
 
@@ -219,7 +220,7 @@ then
     then
         FLAGS_C_COMPILER+=" -mfpu=neon"
     #    FLAGS_C_COMPILER+=" -march=native"
-    #    FLAGS_C_COMPILER+=" -mcpu=native"
+    #    FLAGS_C_COMPILER+=" -march=native"
     #    FLAGS_C_COMPILER+=" -mtune=native"
     fi
 
@@ -234,8 +235,9 @@ then
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
     then
-        FLAGS_CXX_COMPILER+=" -mcpu=native"
+        FLAGS_CXX_COMPILER+=" -march=native"
         FLAGS_CXX_COMPILER+=" -mtune=native"
+        FLAGS_CXX_COMPILER+=" -mdump-tune-features"
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"
@@ -243,7 +245,7 @@ then
         FLAGS_CXX_COMPILER+=" -maltivec"
         FLAGS_CXX_COMPILER+=" -std=gnu++11"
 
-        #FLAGS_CXX_COMPILER+=" -mcpu=power9"
+        #FLAGS_CXX_COMPILER+=" -march=power9"
         #FLAGS_CXX_COMPILER+=" -mtune=power9"
     fi
 
@@ -251,7 +253,7 @@ then
     then
         FLAGS_CXX_COMPILER+=" -mfpu=neon"
     #    FLAGS_CXX_COMPILER+=" -march=native"
-    #    FLAGS_CXX_COMPILER+=" -mcpu=native"
+    #    FLAGS_CXX_COMPILER+=" -march=native"
     #    FLAGS_CXX_COMPILER+=" -mtune=native"
     fi
 fi
