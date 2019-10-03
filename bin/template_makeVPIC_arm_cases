@@ -84,6 +84,14 @@ ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
+# Build optimized case for devel branch with compiler vector support.
+
+ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
+mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
+
+################################################################################
 # Build optimized cases for devel branch with V4 support.
 
 ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}

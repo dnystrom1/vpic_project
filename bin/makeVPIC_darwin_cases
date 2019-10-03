@@ -112,6 +112,14 @@ ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ################################################################################
+# Build optimized case for devel_wdn branch with compiler vector support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
 # Build optimized portable case for devel_wdn branch with V4 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}

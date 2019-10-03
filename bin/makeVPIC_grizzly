@@ -239,21 +239,40 @@ then
         FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
 
         FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
-    fi
 
-    if echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
+    elif echo $ARCH | egrep -q "_DBG_V8_|_OPT_V8_"
     then
         FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
 
         FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-    fi
 
-    if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+    elif echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
     then
         FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
 
         FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+
+    elif echo $ARCH | egrep -q "_DBG_V1_|_OPT_V1_"
+    then
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+    else
+        FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+        FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
     fi
+fi
+
+################################################################################
+# Figure out if we are using compiler vectorization.
+
+if echo $ARCH | egrep -q "_DBG_V1_VECT_|_OPT_V1_VECT_"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
 fi
 
 ################################################################################
@@ -389,6 +408,36 @@ fi
 # Build an optimized version of VPIC with Intel compilers.
 
 if [ $ARCH = "GRIZZLY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
+if [ $ARCH = "GRIZZLY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules

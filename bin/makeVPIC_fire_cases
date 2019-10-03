@@ -85,6 +85,15 @@ ${vtime} bin/makeVPIC_fire $ARCH $FEAT $BRANCH $NJ >& makeVPIC_fire.log
 mv makeVPIC_fire.log build/$ARCH/vpic
 
 ################################################################################
+# Build the optimized Intel case for the master branch with compiler vector
+#support.
+
+ARCH=FIRE_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_fire $ARCH $FEAT $BRANCH $NJ >& makeVPIC_fire.log
+mv makeVPIC_fire.log build/$ARCH/vpic
+
+################################################################################
 # Build the optimized Intel cases for the master branch with V4 support.
 
 ARCH=FIRE_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}

@@ -95,6 +95,15 @@ ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
+# Build the optimized Intel case for the master branch with compiler vector
+# support.
+
+ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_KNL${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
+mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
+
+################################################################################
 # Build the optimized Intel cases for the master branch with V4 support.
 
 ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT_KNL${FEAT}
@@ -145,6 +154,15 @@ mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 # Build the optimized Intel case for the master branch without vector support.
 
 ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE_HSW${FEAT}
+BRANCH=knl_open_science
+${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
+mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
+
+################################################################################
+# Build the optimized Intel case for the master branch with compiler vector
+# support.
+
+ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_HSW${FEAT}
 BRANCH=knl_open_science
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
