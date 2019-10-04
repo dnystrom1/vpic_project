@@ -375,9 +375,21 @@ then
         echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O3"
+    FLAGS_C_COMPILER="-g -Ofast"
+    #FLAGS_C_COMPILER="-g -O3"
 
-    FLAGS_CXX_COMPILER="-g -O3"
+    FLAGS_CXX_COMPILER="-g -Ofast"
+    #FLAGS_CXX_COMPILER="-g -O3"
+
+    # Build with OpenMP simd support.
+    if echo $ARCH | egrep -q "_DBG_V1_VECT_|_OPT_V1_VECT_"
+    then
+        FLAGS_C_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
+        #FLAGS_C_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+
+        FLAGS_CXX_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
+        #FLAGS_CXX_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+    fi
 
     # Build with SVE support to use with ARMIE.
     if echo $ARCH | grep -q "SVE"
