@@ -104,6 +104,11 @@ then
     NODE="AMD_EPC"
 fi
 
+if echo $ARCH | egrep -q "AMD_ROM"
+then
+    NODE="AMD_ROM"
+fi
+
 if echo $ARCH | egrep -q "ARM_TX2"
 then
     NODE="ARM_TX2"
@@ -194,6 +199,7 @@ then
 
     #FLAGS_C_COMPILER="-g -O2"
     FLAGS_C_COMPILER="-g -Ofast"
+    FLAGS_C_COMPILER+=" -fopenmp-simd"
     FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -226,6 +232,7 @@ then
 
     #FLAGS_CXX_COMPILER="-g -O2"
     FLAGS_CXX_COMPILER="-g -Ofast"
+    FLAGS_CXX_COMPILER+=" -fopenmp-simd"
     FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -400,6 +407,51 @@ then
     fi
 fi
 
+if echo $ARCH | egrep -q "AMD_OPT|AMD_DBG"
+then
+    VCOM="AMD"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    if [ ! "x$VERSION_AMD" = "x" ]
+    then
+        module load aocc/$VERSION_AMD
+        echo "module load aocc/$VERSION_AMD" >> bashrc.modules
+    else
+        module load aocc/2.0.0
+        echo "module load aocc/2.0.0" >> bashrc.modules
+    fi
+
+    FLAGS_C_COMPILER="-g -Ofast -finline-hint-functions"
+    #FLAGS_C_COMPILER="-g -O3"
+
+    FLAGS_CXX_COMPILER="-g -Ofast -finline-hint-functions"
+    #FLAGS_CXX_COMPILER="-g -O3"
+
+    if echo $ARCH | egrep -q "AMD_EPC"
+    then
+        FLAGS_C_COMPILER+=" -march=znver1"
+
+        FLAGS_CXX_COMPILER+=" -march=znver1"
+    fi
+
+    if echo $ARCH | egrep -q "AMD_ROM"
+    then
+        FLAGS_C_COMPILER+=" -march=znver2"
+
+        FLAGS_CXX_COMPILER+=" -march=znver2"
+    fi
+
+    # Build with OpenMP simd support.
+    if echo $ARCH | egrep -q "_DBG_V1_VECT_|_OPT_V1_VECT_"
+    then
+        FLAGS_C_COMPILER+=" -fopenmp-simd"
+
+        FLAGS_CXX_COMPILER+=" -fopenmp-simd"
+    fi
+fi
+
 ################################################################################
 # Figure out which MPI library to use.
 
@@ -553,6 +605,13 @@ then
             FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
         fi
 
+        if echo $ARCH | egrep -q "AMD_ROM"
+        then
+            FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+
+            FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+        fi
+
         if echo $ARCH | egrep -q "ARM_TX2"
         then
             if echo $ARCH | grep -q "SVE"
@@ -637,6 +696,12 @@ then
         FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
 
     elif echo $ARCH | egrep -q "AMD_EPC"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+    elif echo $ARCH | egrep -q "AMD_ROM"
     then
         FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
 
