@@ -748,6 +748,39 @@ then
 fi
 
 ################################################################################
+# Figure out if this is a LikWid build.
+
+SET_SHARED_LIBS="OFF"
+
+if echo $ARCH | grep -q "LIKWID"
+then
+    SET_SHARED_LIBS="ON"
+
+    FLAGS_C_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
+
+    FLAGS_CXX_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
+
+    if echo $ARCH | grep -q "LIKWID_ADVANCE"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_LIKWID_ADVANCE"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_LIKWID_ADVANCE"
+
+    elif echo $ARCH | grep -q "LIKWID_CENTER_P"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_LIKWID_CENTER_P"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_LIKWID_CENTER_P"
+
+    else
+        FLAGS_C_COMPILER+=" -DVPIC_USE_LIKWID_OFF"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_LIKWID_OFF"
+
+    fi
+fi
+
+################################################################################
 # Figure out if this is a MAP build.
 
 if echo $ARCH | grep -q "MAP"
