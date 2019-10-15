@@ -821,6 +821,15 @@ if echo $ARCH | grep -q "LIKWID"
 then
     SET_SHARED_LIBS="ON"
 
+    if [ ! "x$VERSION_LIKWID" = "x" ]
+    then
+        module load likwid/$VERSION_LIKWID
+        echo "module load likwid/$VERSION_LIKWID" >> bashrc.modules
+    else
+        module load likwid
+        echo "module load likwid" >> bashrc.modules
+    fi
+
     FLAGS_C_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
 
     FLAGS_CXX_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
