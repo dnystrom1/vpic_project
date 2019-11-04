@@ -32,6 +32,8 @@ fi
 ##############################################################################################################################################
 # Preliminary stuff.
 
+export OMPI_MCA_btl="^openib"
+
 vtime=''
 
 #voc='--vm-overcommit=enable'
@@ -64,27 +66,25 @@ aprun='srun'
 ##############################################################################################################################################
 # Define some useful variables to tame the command lines when using the low level process binding interface.
 
-# Needs to be fixed.
+cpu_list_rpc1_64_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"
+cpu_list_rpc1_64_socket_1="32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63"
 
-#cpu_list_rpc1_64_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27"
-#cpu_list_rpc1_64_socket_1="28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55"
+cpu_list_rpc1_32_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"
+cpu_list_rpc1_32_socket_1="32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47"
 
-#cpu_list_rpc1_32_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"
-#cpu_list_rpc1_32_socket_1="28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43"
+cpu_list_rpc1_16_socket_0="0,1,2,3,4,5,6,7"
+cpu_list_rpc1_16_socket_1="32,33,34,35,36,37,38,39"
 
-#cpu_list_rpc1_16_socket_0="0,1,2,3,4,5,6,7"
-#cpu_list_rpc1_16_socket_1="28,29,30,31,32,33,34,35"
+cpu_list_rpc1_08_socket_0="0,1,2,3"
+cpu_list_rpc1_08_socket_1="32,33,34,35"
 
-#cpu_list_rpc1_08_socket_0="0,1,2,3"
-#cpu_list_rpc1_08_socket_1="28,29,30,31"
+cpu_list_rpc1_04_socket_0="0,1"
+cpu_list_rpc1_04_socket_1="32,33"
 
-#cpu_list_rpc1_04_socket_0="0,1"
-#cpu_list_rpc1_04_socket_1="28,29"
+cpu_list_rpc1_02_socket_0="0"
+cpu_list_rpc1_02_socket_1="32"
 
-#cpu_list_rpc1_02_socket_0="0"
-#cpu_list_rpc1_02_socket_1="28"
-
-#cpu_list_rpc1_01_socket_0="0"
+cpu_list_rpc1_01_socket_0="0"
 
 cpu_bind_rpc1_64="--cpu_bind=map_cpu:${cpu_list_rpc1_64_socket_0},${cpu_list_rpc1_64_socket_1}"
 cpu_bind_rpc1_32="--cpu_bind=map_cpu:${cpu_list_rpc1_32_socket_0},${cpu_list_rpc1_32_socket_1}"
