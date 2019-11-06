@@ -161,11 +161,18 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate-position=both"
     FLAGS_CXX_COMPILER+=" -diag-disable 10397"
 
-    if echo $ARCH | grep -q "INT_SKY"
+    if echo $ARCH | egrep -q "INT_SKY|INT_KNL"
     then
         FLAGS_C_COMPILER+=" -qopt-zmm-usage=high"
 
         FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
+    fi
+
+    if echo $ARCH | egrep -q "_DBG_V1_NONE_|_OPT_V1_NONE_"
+    then
+        FLAGS_C_COMPILER+=" -no-vec"
+
+        FLAGS_CXX_COMPILER+=" -no-vec"
     fi
 fi
 
@@ -529,6 +536,16 @@ then
     FLAGS_C_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
 
     FLAGS_CXX_COMPILER+=" -DVPIC_USE_LEGACY_SORT"
+fi
+
+################################################################################
+# Figure out whether to swap init of MPI and Pthreads.
+
+if echo $ARCH | grep -q "SWAP_PTH_INIT"
+then
+    FLAGS_C_COMPILER+=" -DVPIC_SWAP_MPI_PTHREAD_INIT"
+
+    FLAGS_CXX_COMPILER+=" -DVPIC_SWAP_MPI_PTHREAD_INIT"
 fi
 
 ################################################################################
