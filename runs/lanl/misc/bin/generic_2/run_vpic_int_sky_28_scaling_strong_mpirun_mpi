@@ -32,6 +32,8 @@ fi
 ##############################################################################################################################################
 # Preliminary stuff.
 
+export OMPI_MCA_btl="^openib"
+
 vtime=''
 
 #voc='--vm-overcommit=enable'
@@ -92,34 +94,6 @@ aprun='mpirun'
 ##############################################################################################################################################
 # Define some useful variables to tame the command lines when using the low level process binding interface.
 
-cpu_list_rpc2_56_socket_0="0,56,1,57,2,58,3,59,4,60,5,61,6,62,7,63,8,64,9,65,10,66,11,67,12,68,13,69,14,70,15,71,16,72,17,73,18,74,19,75,20,76,21,77,22,78,23,79,24,80,25,81,26,82,27,83"
-cpu_list_rpc2_56_socket_1="28,84,29,85,30,86,31,87,32,88,33,89,34,90,35,91,36,92,37,93,38,94,39,95,40,96,41,97,42,98,43,99,44,100,45,101,46,102,47,103,48,104,49,105,50,106,51,107,52,108,53,109,54,110,55,111"
-
-cpu_list_rpc2_32_socket_0="0,56,1,57,2,58,3,59,4,60,5,61,6,62,7,63,8,64,9,65,10,66,11,67,12,68,13,69,14,70,15,71"
-cpu_list_rpc2_32_socket_1="28,84,29,85,30,86,31,87,32,88,33,89,34,90,35,91,36,92,37,93,38,94,39,95,40,96,41,97,42,98,43,99"
-
-cpu_list_rpc2_16_socket_0="0,56,1,57,2,58,3,59,4,60,5,61,6,62,7,63"
-cpu_list_rpc2_16_socket_1="28,84,29,85,30,86,31,87,32,88,33,89,34,90,35,91"
-
-cpu_list_rpc2_08_socket_0="0,56,1,57,2,58,3,59"
-cpu_list_rpc2_08_socket_1="28,84,29,85,30,86,31,87"
-
-cpu_list_rpc2_04_socket_0="0,56,1,57"
-cpu_list_rpc2_04_socket_1="28,84,29,85"
-
-cpu_list_rpc2_02_socket_0="0,56"
-cpu_list_rpc2_02_socket_1="28,84"
-
-cpu_list_rpc2_01_socket_0="0,56"
-
-#cpu_bind_rpc2_56="--cpu_bind=map_cpu:${cpu_list_rpc2_56_socket_0},${cpu_list_rpc2_56_socket_1}"
-#cpu_bind_rpc2_32="--cpu_bind=map_cpu:${cpu_list_rpc2_32_socket_0},${cpu_list_rpc2_32_socket_1}"
-#cpu_bind_rpc2_16="--cpu_bind=map_cpu:${cpu_list_rpc2_16_socket_0},${cpu_list_rpc2_16_socket_1}"
-#cpu_bind_rpc2_08="--cpu_bind=map_cpu:${cpu_list_rpc2_08_socket_0},${cpu_list_rpc2_08_socket_1}"
-#cpu_bind_rpc2_04="--cpu_bind=map_cpu:${cpu_list_rpc2_04_socket_0},${cpu_list_rpc2_04_socket_1}"
-#cpu_bind_rpc2_02="--cpu_bind=map_cpu:${cpu_list_rpc2_02_socket_0},${cpu_list_rpc2_02_socket_1}"
-#cpu_bind_rpc2_01="--cpu_bind=map_cpu:${cpu_list_rpc2_01_socket_0}"
-
 cpu_bind_rpc2_56="--use-hwthread-cpus --map-by ppr:56:socket:pe=1"
 cpu_bind_rpc2_32="--use-hwthread-cpus --map-by ppr:32:socket:pe=1"
 cpu_bind_rpc2_16="--use-hwthread-cpus --map-by ppr:16:socket:pe=1"
@@ -127,34 +101,6 @@ cpu_bind_rpc2_08="--use-hwthread-cpus --map-by ppr:8:socket:pe=1"
 cpu_bind_rpc2_04="--use-hwthread-cpus --map-by ppr:4:socket:pe=1"
 cpu_bind_rpc2_02="--use-hwthread-cpus --map-by ppr:2:socket:pe=1"
 cpu_bind_rpc2_01="--use-hwthread-cpus --map-by ppr:2:socket:pe=1"
-
-cpu_list_rpc1_56_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27"
-cpu_list_rpc1_56_socket_1="28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55"
-
-cpu_list_rpc1_32_socket_0="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"
-cpu_list_rpc1_32_socket_1="28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43"
-
-cpu_list_rpc1_16_socket_0="0,1,2,3,4,5,6,7"
-cpu_list_rpc1_16_socket_1="28,29,30,31,32,33,34,35"
-
-cpu_list_rpc1_08_socket_0="0,1,2,3"
-cpu_list_rpc1_08_socket_1="28,29,30,31"
-
-cpu_list_rpc1_04_socket_0="0,1"
-cpu_list_rpc1_04_socket_1="28,29"
-
-cpu_list_rpc1_02_socket_0="0"
-cpu_list_rpc1_02_socket_1="28"
-
-cpu_list_rpc1_01_socket_0="0"
-
-#cpu_bind_rpc1_56="--cpu_bind=map_cpu:${cpu_list_rpc1_56_socket_0},${cpu_list_rpc1_56_socket_1}"
-#cpu_bind_rpc1_32="--cpu_bind=map_cpu:${cpu_list_rpc1_32_socket_0},${cpu_list_rpc1_32_socket_1}"
-#cpu_bind_rpc1_16="--cpu_bind=map_cpu:${cpu_list_rpc1_16_socket_0},${cpu_list_rpc1_16_socket_1}"
-#cpu_bind_rpc1_08="--cpu_bind=map_cpu:${cpu_list_rpc1_08_socket_0},${cpu_list_rpc1_08_socket_1}"
-#cpu_bind_rpc1_04="--cpu_bind=map_cpu:${cpu_list_rpc1_04_socket_0},${cpu_list_rpc1_04_socket_1}"
-#cpu_bind_rpc1_02="--cpu_bind=map_cpu:${cpu_list_rpc1_02_socket_0},${cpu_list_rpc1_02_socket_1}"
-#cpu_bind_rpc1_01="--cpu_bind=map_cpu:${cpu_list_rpc1_01_socket_0}"
 
 cpu_bind_rpc1_56="--map-by ppr:28:socket:pe=1"
 cpu_bind_rpc1_32="--map-by ppr:16:socket:pe=1"

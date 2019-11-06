@@ -50,6 +50,7 @@ VCOM="INT"
 #VCOM="IBM"
 #VCOM="PGI"
 #VCOM="ARM"
+#VCOM="AMD"
 
 ################################################################################
 # Select an optimized or debug build.
@@ -70,7 +71,8 @@ NODE="INT_BDW"
 #NODE="IBM_PW8"
 #NODE="IBM_PW9"
 
-#NODE="AMD_EPC"
+#NODE="AMD_NAP"
+#NODE="AMD_ROM"
 
 #NODE="ARM_TX2"
 

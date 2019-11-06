@@ -99,9 +99,9 @@ then
     NODE="IBM_PW9"
 fi
 
-if echo $ARCH | egrep -q "AMD_EPC"
+if echo $ARCH | egrep -q "AMD_NAP"
 then
-    NODE="AMD_EPC"
+    NODE="AMD_NAP"
 fi
 
 if echo $ARCH | egrep -q "AMD_ROM"
@@ -436,7 +436,7 @@ then
     FLAGS_CXX_COMPILER="-g -Ofast -finline-hint-functions"
     #FLAGS_CXX_COMPILER="-g -O3"
 
-    if echo $ARCH | egrep -q "AMD_EPC"
+    if echo $ARCH | egrep -q "AMD_NAP"
     then
         FLAGS_C_COMPILER+=" -march=znver1"
 
@@ -615,7 +615,7 @@ then
             FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
         fi
 
-        if echo $ARCH | egrep -q "AMD_EPC"
+        if echo $ARCH | egrep -q "AMD_NAP"
         then
             FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
 
@@ -712,7 +712,7 @@ then
 
         FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
 
-    elif echo $ARCH | egrep -q "AMD_EPC"
+    elif echo $ARCH | egrep -q "AMD_NAP"
     then
         FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
 

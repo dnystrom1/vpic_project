@@ -1,0 +1,65 @@
+#!/bin/bash
+
+##############################################################################################################################################
+# Figure out problem being run based on value of PWD variable.
+
+if echo $PWD | grep -q "lpi"
+then
+    prob=lpi
+fi
+
+if echo $PWD | grep -q "lpi_sp"
+then
+    prob=lpi_sp
+fi
+
+if echo $PWD | grep -q "reconnection"
+then
+    prob=reconnection
+fi
+
+if [ "x$prob" = "x" ]
+then
+    echo "The prob bash variable is not set to a valid problem."
+    exit 1
+fi
+
+##############################################################################################################################################
+# Generate plot data file for the 1 rank/core case.
+
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_001.dat
+echo '# nnodes | nranks | wall time | wall time | wall time | wall time | wall time | wall time | wall time  | wall time  |' >> plot_data_nrpc_001.dat
+echo '#        |        | timesteps | timesteps | advance_p | advance_p | sort_p    | sort_p    | boundary_p | boundary_p |' >> plot_data_nrpc_001.dat
+echo '#        |        |           | (perfect) |           | (perfect) |           | (perfect) |            | (perfect)  |' >> plot_data_nrpc_001.dat
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_001.dat
+
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_002_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_004_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_008_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_016_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_032_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_064_nrpc_001.log                       >> plot_data_nrpc_001.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_001_nrpc_001.log   ${prob}_hbm_nn_0001_nppn_128_nrpc_001.log                       >> plot_data_nrpc_001.dat
+
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_001.dat
+
+##############################################################################################################################################
+# Generate plot data file for the 2 ranks/core case.
+
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_002.dat
+echo '# nnodes | nranks | wall time | wall time | wall time | wall time | wall time | wall time | wall time  | wall time  |' >> plot_data_nrpc_002.dat
+echo '#        |        | timesteps | timesteps | advance_p | advance_p | sort_p    | sort_p    | boundary_p | boundary_p |' >> plot_data_nrpc_002.dat
+echo '#        |        |           | (perfect) |           | (perfect) |           | (perfect) |            | (perfect)  |' >> plot_data_nrpc_002.dat
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_002.dat
+
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_004_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_008_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_016_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_032_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_064_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_128_nrpc_002.log                       >> plot_data_nrpc_002.dat
+./parseLogFile   ${prob}_hbm_nn_0001_nppn_002_nrpc_002.log   ${prob}_hbm_nn_0001_nppn_256_nrpc_002.log                       >> plot_data_nrpc_002.dat
+
+echo '#--------------------------------------------------------------------------------------------------------------------' >> plot_data_nrpc_002.dat
