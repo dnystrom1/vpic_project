@@ -401,9 +401,9 @@ then
     # Build with SVE support to use with ARMIE.
     if echo $ARCH | grep -q "SVE"
     then
-        FLAGS_C_COMPILER+=" -march=armv8+sve"
+        FLAGS_C_COMPILER+=" -march=armv8+sve -DARM_SVE"
 
-        FLAGS_CXX_COMPILER+=" -march=armv8+sve"
+        FLAGS_CXX_COMPILER+=" -march=armv8+sve -DARM_SVE"
     fi
 fi
 
