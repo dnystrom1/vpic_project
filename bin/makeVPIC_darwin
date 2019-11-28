@@ -382,6 +382,9 @@ then
 
     if [ ! "x$VERSION_ARM_TX2" = "x" ]
     then
+        #module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2
+        #echo "module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2" >> bashrc.modules
+
         module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2
         echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2" >> bashrc.modules
     else
@@ -411,6 +414,27 @@ then
         FLAGS_C_COMPILER+=" -march=armv8+sve -DARM_SVE"
 
         FLAGS_CXX_COMPILER+=" -march=armv8+sve -DARM_SVE"
+    fi
+
+    # Build with support to perform ARMIE collection of statistics.
+    if echo $ARCH | grep -q "ARMIE_CENTER_P"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE_CENTER_P"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE_CENTER_P"
+
+    elif echo $ARCH | grep -q "ARMIE_ADVANCE"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE_ADVANCE"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE_ADVANCE"
+
+    elif echo $ARCH | grep -q "ARMIE"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE"
+
     fi
 fi
 
@@ -840,16 +864,47 @@ then
 
     if [ ! "x$VERSION_LIKWID" = "x" ]
     then
-        module load likwid/$VERSION_LIKWID
-        echo "module load likwid/$VERSION_LIKWID" >> bashrc.modules
+        if echo $VERSION_LIKWID | grep -q "WDN_INTEL"
+        then
+            LIKWID_ROOT=/home/wdn/Packages/likwid/intel
+
+            export PATH=$LIKWID_ROOT/bin:$PATH
+            echo "export PATH=$LIKWID_ROOT/bin:$PATH" >> bashrc.modules
+
+            export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH
+            echo "export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH" >> bashrc.modules
+
+        elif echo $VERSION_LIKWID | grep -q "WDN_ARM"
+        then
+            LIKWID_ROOT=/home/wdn/Packages/likwid/arm
+
+            export PATH=$LIKWID_ROOT/bin:$PATH
+            echo "export PATH=$LIKWID_ROOT/bin:$PATH" >> bashrc.modules
+
+            export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH
+            echo "export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH" >> bashrc.modules
+
+        elif echo $VERSION_LIKWID | grep -q "WDN_POWER9"
+        then
+            LIKWID_ROOT=/home/wdn/Packages/likwid/power9
+
+            export PATH=$LIKWID_ROOT/bin:$PATH
+            echo "export PATH=$LIKWID_ROOT/bin:$PATH" >> bashrc.modules
+
+            export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH
+            echo "export LD_LIBRARY_PATH=$LIKWID_ROOT/lib:$LD_LIBRARY_PATH" >> bashrc.modules
+
+        else
+            module load likwid/$VERSION_LIKWID
+            echo "module load likwid/$VERSION_LIKWID" >> bashrc.modules
+
+        fi
+
     else
         module load likwid
         echo "module load likwid" >> bashrc.modules
+
     fi
-
-    FLAGS_C_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
-
-    FLAGS_CXX_COMPILER+=" -I/projects/opt/centos7/likwid/4.3.4/include"
 
     if echo $ARCH | grep -q "LIKWID_ADVANCE"
     then
@@ -869,6 +924,10 @@ then
         FLAGS_CXX_COMPILER+=" -DVPIC_USE_LIKWID_OFF"
 
     fi
+
+    FLAGS_C_COMPILER+=" -I$LIKWID_ROOT/include"
+
+    FLAGS_CXX_COMPILER+=" -I$LIKWID_ROOT/include"
 fi
 
 ################################################################################
