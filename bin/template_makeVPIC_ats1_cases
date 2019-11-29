@@ -56,9 +56,6 @@ VOPT="OPT"
 ################################################################################
 # Select extra features to use. More than one can be selected.
 
-#FEAT+="_HSW"
-#FEAT+="_KNL"
-
 FEAT+="_LSORT"
 #FEAT+="_TSORT"
 
@@ -89,8 +86,8 @@ FEAT+="_COM_FLAGS_00"
 ################################################################################
 # Build the optimized Intel case for the master branch without vector support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
@@ -98,52 +95,52 @@ mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 # Build the optimized Intel case for the master branch with compiler vector
 # support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel cases for the master branch with V4 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel cases for the master branch with V8 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel cases for the master branch with V16 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512_KNL${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
@@ -153,8 +150,8 @@ mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 ################################################################################
 # Build the optimized Intel case for the master branch without vector support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
@@ -162,47 +159,47 @@ mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 # Build the optimized Intel case for the master branch with compiler vector
 # support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel cases for the master branch with V4 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel cases for the master branch with V8 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 
 ################################################################################
 # Build the optimized Intel case for the master branch with V16 support.
 
-ARCH=REPLACE_ucase_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT_HSW${FEAT}
-BRANCH=knl_open_science
+ARCH=REPLACE_ucase_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
+BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_REPLACE_lcase $ARCH $FEAT $BRANCH $NJ >& makeVPIC_REPLACE_lcase.log
 mv makeVPIC_REPLACE_lcase.log build/$ARCH/vpic
 

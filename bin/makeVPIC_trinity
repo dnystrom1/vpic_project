@@ -549,7 +549,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -579,7 +579,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -609,7 +609,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -640,7 +640,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -671,7 +671,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -702,7 +702,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -734,7 +734,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -766,7 +766,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT_HSW${FEAT}" ]
+if [ $ARCH = "TRINITY_HSW_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -799,7 +799,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_NONE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -829,7 +829,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -859,7 +859,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -890,7 +890,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SSE${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -921,7 +921,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -952,7 +952,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -984,7 +984,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_AVX2${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -1016,7 +1016,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
@@ -1049,7 +1049,7 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
-if [ $ARCH = "TRINITY_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512_KNL${FEAT}" ]
+if [ $ARCH = "TRINITY_KNL_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}" ]
 then
     module list
     echo "module list" >> bashrc.modules
