@@ -101,6 +101,7 @@ then
     fi
 
     FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER+=" -fopenmp-simd"
     FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -109,6 +110,7 @@ then
     FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
     FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER+=" -fopenmp-simd"
     FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -124,13 +126,13 @@ then
     module swap PrgEnv-cray PrgEnv-allinea
     echo "module swap PrgEnv-cray PrgEnv-allinea" >> bashrc.modules
 
-    if [ ! "x$VERSION_GNU" = "x" ]
+    if [ ! "x$VERSION_ALLINEA" = "x" ]
     then
-        module swap allinea allinea/$VERSION_GNU
-        echo "module swap allinea allinea/$VERSION_GNU" >> bashrc.modules
+        module swap allinea allinea/$VERSION_ALLINEA
+        echo "module swap allinea allinea/$VERSION_ALLINEA" >> bashrc.modules
     fi
 
-    FLAGS_C_COMPILER="-g -O2"
+    FLAGS_C_COMPILER="-g -Ofast"
     #FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_C_COMPILER+=" -fno-strict-aliasing"
     #FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
@@ -138,13 +140,52 @@ then
     #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
     #FLAGS_C_COMPILER+=" -rdynamic -dynamic"
 
-    FLAGS_CXX_COMPILER="-g -O2"
+    FLAGS_CXX_COMPILER="-g -Ofast"
     #FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
     #FLAGS_CXX_COMPILER+=" -fno-strict-aliasing"
     #FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
     #FLAGS_CXX_COMPILER+=" -Winline"
     #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
     #FLAGS_CXX_COMPILER+=" -rdynamic -dynamic"
+
+    # Build with OpenMP simd support.
+    if echo $ARCH | egrep -q "_DBG_V1_VECT_|_OPT_V1_VECT_"
+    then
+        FLAGS_C_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
+        #FLAGS_C_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+
+        FLAGS_CXX_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
+        #FLAGS_CXX_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+    fi
+
+    # Build with SVE support to use with ARMIE.
+    if echo $ARCH | grep -q "SVE"
+    then
+        FLAGS_C_COMPILER+=" -march=armv8+sve -DARM_SVE"
+
+        FLAGS_CXX_COMPILER+=" -march=armv8+sve -DARM_SVE"
+    fi
+
+    # Build with support to perform ARMIE collection of statistics.
+    if echo $ARCH | grep -q "ARMIE_CENTER_P"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE_CENTER_P"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE_CENTER_P"
+
+    elif echo $ARCH | grep -q "ARMIE_ADVANCE"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE_ADVANCE"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE_ADVANCE"
+
+    elif echo $ARCH | grep -q "ARMIE"
+    then
+        FLAGS_C_COMPILER+=" -DVPIC_USE_ARMIE"
+
+        FLAGS_CXX_COMPILER+=" -DVPIC_USE_ARMIE"
+
+    fi
 fi
 
 ################################################################################
