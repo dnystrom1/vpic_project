@@ -149,6 +149,13 @@ then
         FLAGS_CXX_COMPILER+=" -qopt-zmm-usage=high"
         FLAGS_CXX_COMPILER+=" -diag-disable 10397"
     fi
+
+    if echo $ARCH | egrep -q "_DBG_V1_NONE_|_OPT_V1_NONE_"
+    then
+        FLAGS_C_COMPILER+=" -no-vec"
+
+        FLAGS_CXX_COMPILER+=" -no-vec"
+    fi
 fi
 
 if echo $ARCH | grep -q "GNU"
