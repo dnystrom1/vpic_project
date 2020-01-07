@@ -352,6 +352,31 @@ fi
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
 
+if [ $ARCH = "SORRENTO_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V1_VECT${FEAT}" ]
+then
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_INTEGRATED_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC with Intel compilers.
+
 if [ $ARCH = "SORRENTO_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_PORT${FEAT}" ]
 then
     cd $VPIC_DIR
