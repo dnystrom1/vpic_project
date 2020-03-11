@@ -88,6 +88,16 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report=5 -qopt-report-phase=all"
     FLAGS_CXX_COMPILER+=" -diag-disable 10397"
     FLAGS_CXX_COMPILER+=" -D__PURE_INTEL_C99_HEADERS__"
+    FLAGS_CXX_COMPILER+=" -fp-trap=inexact"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=denormal"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=invalid"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=underflow"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=overflow"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=divzero"
+
+
+    #FLAGS_CXX_COMPILER+=" -fp-trap=divzero,inexact,invalid,overflow,underflow,denormal"
+    #FLAGS_CXX_COMPILER+=" -fp-trap=all"
     #FLAGS_CXX_COMPILER+=" -D_Float32=float -D_Float64=double -D_Float128=__float128"
     #FLAGS_CXX_COMPILER+=" -D_Float32x=_Float64 -D_Float64x=_Float128"
 
