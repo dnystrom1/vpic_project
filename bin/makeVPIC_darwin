@@ -147,7 +147,7 @@ then
     FLAGS_C_COMPILER+=" -qopt-report-annotate"
     FLAGS_C_COMPILER+=" -qopt-report-annotate-position=both"
     FLAGS_C_COMPILER+=" -diag-disable 10397"
-    FLAGS_C_COMPILER+=" -fp-model strict"
+   #FLAGS_C_COMPILER+=" -fp-model strict"
 
     FLAGS_CXX_COMPILER="-g -O3 -xhost"
     FLAGS_CXX_COMPILER+=" -qopenmp-simd"
@@ -161,7 +161,7 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate"
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate-position=both"
     FLAGS_CXX_COMPILER+=" -diag-disable 10397"
-    FLAGS_CXX_COMPILER+=" -fp-model strict"
+   #FLAGS_CXX_COMPILER+=" -fp-model strict"
 
     if echo $ARCH | egrep -q "INT_SKY|INT_KNL"
     then
