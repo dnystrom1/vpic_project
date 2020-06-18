@@ -147,6 +147,7 @@ then
     FLAGS_C_COMPILER+=" -qopt-report-annotate"
     FLAGS_C_COMPILER+=" -qopt-report-annotate-position=both"
     FLAGS_C_COMPILER+=" -diag-disable 10397"
+    FLAGS_C_COMPILER+=" -fp-model strict"
 
     FLAGS_CXX_COMPILER="-g -O3 -xhost"
     FLAGS_CXX_COMPILER+=" -qopenmp-simd"
@@ -160,6 +161,7 @@ then
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate"
     FLAGS_CXX_COMPILER+=" -qopt-report-annotate-position=both"
     FLAGS_CXX_COMPILER+=" -diag-disable 10397"
+    FLAGS_CXX_COMPILER+=" -fp-model strict"
 
     if echo $ARCH | egrep -q "INT_SKY|INT_KNL"
     then
@@ -214,11 +216,25 @@ then
     FLAGS_C_COMPILER+=" -Winline"
     #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
 
-    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
+    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
         FLAGS_C_COMPILER+=" -march=native"
         FLAGS_C_COMPILER+=" -mtune=native"
         FLAGS_C_COMPILER+=" -mdump-tune-features"
+    fi
+
+    if echo $ARCH | egrep -q "INT_SKY"
+    then
+        if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+        then
+            FLAGS_C_COMPILER+=" -march=skylake-avx512"
+            FLAGS_C_COMPILER+=" -mtune=skylake-avx512"
+            FLAGS_C_COMPILER+=" -mdump-tune-features"
+	else
+            FLAGS_C_COMPILER+=" -march=skylake"
+            FLAGS_C_COMPILER+=" -mtune=skylake"
+            FLAGS_C_COMPILER+=" -mdump-tune-features"
+	fi
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"
@@ -252,6 +268,20 @@ then
         FLAGS_CXX_COMPILER+=" -march=native"
         FLAGS_CXX_COMPILER+=" -mtune=native"
         FLAGS_CXX_COMPILER+=" -mdump-tune-features"
+    fi
+
+    if echo $ARCH | egrep -q "INT_SKY"
+    then
+        if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+        then
+            FLAGS_CXX_COMPILER+=" -march=skylake-avx512"
+            FLAGS_CXX_COMPILER+=" -mtune=skylake-avx512"
+            FLAGS_CXX_COMPILER+=" -mdump-tune-features"
+	else
+            FLAGS_CXX_COMPILER+=" -march=skylake"
+            FLAGS_CXX_COMPILER+=" -mtune=skylake"
+            FLAGS_CXX_COMPILER+=" -mdump-tune-features"
+	fi
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"

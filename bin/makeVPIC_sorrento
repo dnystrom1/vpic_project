@@ -345,7 +345,6 @@ then
     cmake \
 	-LAH \
 	-DCMAKE_BUILD_TYPE=None \
-        -DENABLE_UNIT_TESTS=ON \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -359,6 +358,7 @@ then
 fi
 
 #	-DENABLE_INTEGRATED_TESTS=ON \
+#        -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
