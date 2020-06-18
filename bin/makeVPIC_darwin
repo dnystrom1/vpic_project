@@ -206,7 +206,7 @@ then
         fi
     fi
 
-    #FLAGS_C_COMPILER="-g -O2"
+   #FLAGS_C_COMPILER="-g -O2"
     FLAGS_C_COMPILER="-g -Ofast"
     FLAGS_C_COMPILER+=" -fopenmp-simd"
     FLAGS_C_COMPILER+=" -ffast-math -fomit-frame-pointer"
@@ -215,7 +215,8 @@ then
     FLAGS_C_COMPILER+=" -rdynamic"
     FLAGS_C_COMPILER+=" -Winline"
     FLAGS_C_COMPILER+=" -finline-limit=2000"
-    FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+   #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_C_COMPILER+=" -fdump-ipa-inline-optimized-missed"
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
@@ -254,7 +255,7 @@ then
     #    FLAGS_C_COMPILER+=" -mtune=native"
     fi
 
-    #FLAGS_CXX_COMPILER="-g -O2"
+   #FLAGS_CXX_COMPILER="-g -O2"
     FLAGS_CXX_COMPILER="-g -Ofast"
     FLAGS_CXX_COMPILER+=" -fopenmp-simd"
     FLAGS_CXX_COMPILER+=" -ffast-math -fomit-frame-pointer"
@@ -263,7 +264,8 @@ then
     FLAGS_CXX_COMPILER+=" -rdynamic"
     FLAGS_CXX_COMPILER+=" -Winline"
     FLAGS_CXX_COMPILER+=" -finline-limit=2000"
-    FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+   #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_CXX_COMPILER+=" -fdump-ipa-inline-optimized-missed"
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
