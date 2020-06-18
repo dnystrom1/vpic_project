@@ -214,7 +214,8 @@ then
     FLAGS_C_COMPILER+=" -fno-unsafe-math-optimizations"
     FLAGS_C_COMPILER+=" -rdynamic"
     FLAGS_C_COMPILER+=" -Winline"
-    #FLAGS_C_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_C_COMPILER+=" -finline-limit=2000"
+    FLAGS_C_COMPILER+=" -fopt-info-all-optall"
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
@@ -261,7 +262,8 @@ then
     FLAGS_CXX_COMPILER+=" -fno-unsafe-math-optimizations"
     FLAGS_CXX_COMPILER+=" -rdynamic"
     FLAGS_CXX_COMPILER+=" -Winline"
-    #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
+    FLAGS_CXX_COMPILER+=" -finline-limit=2000"
+    FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
 
     if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
