@@ -263,7 +263,7 @@ then
     FLAGS_CXX_COMPILER+=" -Winline"
     #FLAGS_CXX_COMPILER+=" -fopt-info-all-optall"
 
-    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_SKY|INT_KNL"
+    if echo $ARCH | egrep -q "INT_SNB|INT_IVY|INT_HSW|INT_BDW|INT_KNL"
     then
         FLAGS_CXX_COMPILER+=" -march=native"
         FLAGS_CXX_COMPILER+=" -mtune=native"
