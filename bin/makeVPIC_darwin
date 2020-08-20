@@ -444,6 +444,15 @@ then
             module restore PrgEnv-armclang
             echo "module restore PrgEnv-armclang" >> bashrc.modules
         fi
+
+        if [ ! "x$VERSION_CMAKE" = "x" ]
+        then
+            module load cmake/$VERSION_CMAKE
+            echo "module load cmake/$VERSION_CMAKE" >> bashrc.modules
+        else
+            module load cmake
+            echo "module load cmake" >> bashrc.modules
+        fi
     fi
 
     FLAGS_C_COMPILER="-g -Ofast"
@@ -550,6 +559,15 @@ then
         else
             module restore PrgEnv-cray
             echo "module restore PrgEnv-cray" >> bashrc.modules
+        fi
+
+        if [ ! "x$VERSION_CMAKE" = "x" ]
+        then
+            module load cmake/$VERSION_CMAKE
+            echo "module load cmake/$VERSION_CMAKE" >> bashrc.modules
+        else
+            module load cmake
+            echo "module load cmake" >> bashrc.modules
         fi
     fi
 
