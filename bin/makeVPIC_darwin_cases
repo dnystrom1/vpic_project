@@ -34,6 +34,7 @@ vtime="/usr/bin/time -p"
 
 VMPI="OMPI"
 #VMPI="IMPI"
+#VMPI="CMPI"
 
 ################################################################################
 # Select a thread model to use.
@@ -51,6 +52,7 @@ VCOM="INT"
 #VCOM="PGI"
 #VCOM="ARM"
 #VCOM="AMD"
+#VCOM="CCE"
 
 ################################################################################
 # Select an optimized or debug build.
@@ -75,6 +77,7 @@ NODE="INT_BDW"
 #NODE="AMD_ROM"
 
 #NODE="ARM_TX2"
+#NODE="ARM_A64"
 
 ################################################################################
 # Select extra features to use. More than one can be selected.
@@ -159,6 +162,14 @@ ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ################################################################################
+# Build optimized ARM case for devel_wdn branch with V4 SVE support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SVE${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
 # Build optimized portable case for devel_wdn branch with V8 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_PORT${FEAT}
@@ -175,6 +186,14 @@ ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic
 
 ################################################################################
+# Build optimized ARM case for devel_wdn branch with V8 SVE support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_SVE${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
 # Build optimized portable case for devel_wdn branch with V16 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_PORT${FEAT}
@@ -186,6 +205,14 @@ mv makeVPIC_darwin.log build/$ARCH/vpic
 # Build optimized Intel case for devel_wdn branch with V16 support.
 
 ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_AVX512${FEAT}
+BRANCH=devel_wdn
+${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
+mv makeVPIC_darwin.log build/$ARCH/vpic
+
+################################################################################
+# Build optimized ARM case for devel_wdn branch with V16 SVE support.
+
+ARCH=DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_SVE${FEAT}
 BRANCH=devel_wdn
 ${vtime} bin/makeVPIC_darwin $ARCH $FEAT $BRANCH $NJ >& makeVPIC_darwin.log
 mv makeVPIC_darwin.log build/$ARCH/vpic

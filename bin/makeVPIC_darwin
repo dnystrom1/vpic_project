@@ -114,6 +114,11 @@ then
     NODE="ARM_TX2"
 fi
 
+if echo $ARCH | egrep -q "ARM_A64"
+then
+    NODE="ARM_A64"
+fi
+
 ################################################################################
 # Figure out which compiler to use.
 
@@ -414,16 +419,31 @@ then
     VPIC_COMPILER_C="mpicc"
     VPIC_COMPILER_CXX="mpicxx"
 
-    if [ ! "x$VERSION_ARM_TX2" = "x" ]
+    if echo $ARCH | egrep -q "ARM_TX2"
     then
-        #module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2
-        #echo "module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2" >> bashrc.modules
+        if [ ! "x$VERSION_ARM_TX2" = "x" ]
+        then
+            #module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2
+            #echo "module load ThunderX2CN99/RHEL/7/arm-linux-compiler-$VERSION_ARM_TX2" >> bashrc.modules
 
-        module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2
-        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2" >> bashrc.modules
-    else
-        module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0
-        echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0" >> bashrc.modules
+            module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2
+            echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-$VERSION_ARM_TX2" >> bashrc.modules
+        else
+            module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0
+            echo "module load ThunderX2CN99/RHEL/7/arm-hpc-compiler-18.4/armpl/18.4.0" >> bashrc.modules
+        fi
+    fi
+
+    if echo $ARCH | egrep -q "ARM_A64"
+    then
+        if [ ! "x$VERSION_ARM_A64" = "x" ]
+        then
+            module restore PrgEnv-armclang
+            echo "module restore PrgEnv-armclang" >> bashrc.modules
+        else
+            module restore PrgEnv-armclang
+            echo "module restore PrgEnv-armclang" >> bashrc.modules
+        fi
     fi
 
     FLAGS_C_COMPILER="-g -Ofast"
@@ -517,10 +537,51 @@ then
     fi
 fi
 
+if echo $ARCH | egrep -q "CCE_OPT|CCE_DBG"
+then
+    VCOM="CCE"
+
+    if echo $ARCH | egrep -q "ARM_A64"
+    then
+        if [ ! "x$VERSION_CCE_A64" = "x" ]
+        then
+            module restore PrgEnv-cray
+            echo "module restore PrgEnv-cray" >> bashrc.modules
+        else
+            module restore PrgEnv-cray
+            echo "module restore PrgEnv-cray" >> bashrc.modules
+        fi
+    fi
+
+    VPIC_COMPILER_C="cc"
+    VPIC_COMPILER_CXX="CC"
+
+    FLAGS_C_COMPILER="-g -O3"
+
+    FLAGS_CXX_COMPILER="-g -O3"
+fi
+
 ################################################################################
 # Figure out which MPI library to use.
 
 VMPI="ZZZ"
+
+if echo $ARCH | grep -q "CMPI"
+then
+    VMPI="CMPI"
+
+    VPIC_COMPILER_C="mpicc"
+    VPIC_COMPILER_CXX="mpicxx"
+
+    if [ ! "x$VERSION_CRAY_MPICH" = "x" ]
+    then
+        module load cray-mvapich2_nogpu_noregcache_svealpha/2.3.4
+        echo "module load cray-mvapich2_nogpu_noregcache_svealpha/2.3.4" >> bashrc.modules
+    else
+        module load cray-mvapich2_nogpu_noregcache_svealpha/2.3.4
+        echo "module load cray-mvapich2_nogpu_noregcache_svealpha/2.3.4" >> bashrc.modules
+    fi
+fi
 
 if echo $ARCH | grep -q "OMPI"
 then
@@ -1347,6 +1408,111 @@ then
 	-DENABLE_INTEGRATED_TESTS=OFF \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
 	-DUSE_V4_NEON=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
+
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V4_SVE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DENABLE_UNIT_TESTS=OFF \
+	-DENABLE_COLOR_UNIT_TESTS=OFF \
+	-DENABLE_INTEGRATED_TESTS=OFF \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_SVE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
+
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_SVE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DENABLE_UNIT_TESTS=OFF \
+	-DENABLE_COLOR_UNIT_TESTS=OFF \
+	-DENABLE_INTEGRATED_TESTS=OFF \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_SVE=ON \
+	-DUSE_V8_SVE=ON \
+	-DVPIC_PRINT_MORE_DIGITS=ON \
+	-DUSE_OPENMP=$SET_OPENMP \
+	-DUSE_PTHREADS=$SET_PTHREADS \
+	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+	..
+    make -j $NJ VERBOSE=1
+fi
+
+#	-DENABLE_COLOR_UNIT_TESTS=ON \
+#	-DENABLE_INTEGRATED_TESTS=ON \
+#	-DENABLE_UNIT_TESTS=ON \
+
+##########################################################################################
+# Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
+
+if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_SVE${FEAT}" ]
+then
+    module list
+    echo "module list" >> bashrc.modules
+
+    cd $VPIC_DIR
+    mkdir build
+    cd build
+    cmake \
+	-LAH \
+	-DCMAKE_BUILD_TYPE=None \
+	-DENABLE_UNIT_TESTS=OFF \
+	-DENABLE_COLOR_UNIT_TESTS=OFF \
+	-DENABLE_INTEGRATED_TESTS=OFF \
+	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+	-DUSE_V4_SVE=ON \
+	-DUSE_V8_SVE=ON \
+	-DUSE_V16_SVE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
 	-DUSE_PTHREADS=$SET_PTHREADS \
