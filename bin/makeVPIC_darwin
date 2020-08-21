@@ -456,27 +456,47 @@ then
     fi
 
     FLAGS_C_COMPILER="-g -Ofast"
-    #FLAGS_C_COMPILER="-g -O3"
+    FLAGS_C_COMPILER+=" -fsave-optimization-record"
 
     FLAGS_CXX_COMPILER="-g -Ofast"
-    #FLAGS_CXX_COMPILER="-g -O3"
+    FLAGS_CXX_COMPILER+=" -fsave-optimization-record"
 
     # Build with OpenMP simd support.
     if echo $ARCH | egrep -q "_DBG_V1_VECT_|_OPT_V1_VECT_"
     then
-        FLAGS_C_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
-        #FLAGS_C_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+        FLAGS_C_COMPILER+=" -fopenmp-simd"
+        FLAGS_C_COMPILER+=" -fsimdmath"
+        FLAGS_C_COMPILER+=" -ffp-contract=fast"
 
-        FLAGS_CXX_COMPILER+=" -fopenmp-simd -fsimdmath -ffp-contract=fast"
-        #FLAGS_CXX_COMPILER+=" -fopenmp -fsimdmath -ffp-contract=fast"
+        FLAGS_CXX_COMPILER+=" -fopenmp-simd"
+        FLAGS_CXX_COMPILER+=" -fsimdmath"
+        FLAGS_CXX_COMPILER+=" -ffp-contract=fast"
+    fi
+
+    # Build with SVE support for Fujitsu ARM A64FX.
+    if echo $ARCH | grep -q "ARM_A64"
+    then
+        FLAGS_C_COMPILER+=" -march=armv8.2-a+sve"
+        FLAGS_C_COMPILER+=" -mcpu=a64fx"
+        FLAGS_C_COMPILER+=" -armpl=sve"
+        FLAGS_C_COMPILER+=" -DARM_SVE"
+
+        FLAGS_CXX_COMPILER+=" -march=armv8.2-a+sve"
+        FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
+        FLAGS_CXX_COMPILER+=" -armpl=sve"
+        FLAGS_CXX_COMPILER+=" -DARM_SVE"
     fi
 
     # Build with SVE support to use with ARMIE.
     if echo $ARCH | grep -q "SVE"
     then
-        FLAGS_C_COMPILER+=" -march=armv8+sve -DARM_SVE"
+        FLAGS_C_COMPILER+=" -march=armv8+sve"
+        FLAGS_C_COMPILER+=" -armpl=sve"
+        FLAGS_C_COMPILER+=" -DARM_SVE"
 
-        FLAGS_CXX_COMPILER+=" -march=armv8+sve -DARM_SVE"
+        FLAGS_CXX_COMPILER+=" -march=armv8+sve"
+        FLAGS_CXX_COMPILER+=" -armpl=sve"
+        FLAGS_CXX_COMPILER+=" -DARM_SVE"
     fi
 
     # Build with support to perform ARMIE collection of statistics.
@@ -811,6 +831,41 @@ then
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
             fi
         fi
+
+        if echo $ARCH | egrep -q "ARM_A64"
+        then
+            if echo $ARCH | grep -q "V4_SVE"
+            then
+                FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+                FLAGS_C_COMPILER+=" -msve-vector-bits=128"
+
+                FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
+                FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
+
+            elif echo $ARCH | grep -q "V8_SVE"
+            then
+                FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+                FLAGS_C_COMPILER+=" -msve-vector-bits=256"
+
+                FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
+                FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
+
+            elif echo $ARCH | grep -q "V16_SVE"
+            then
+                FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+                FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+                FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+                FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+            else
+                FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+                FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+                FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
+                FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+            fi
+        fi
     fi
 fi
 
@@ -904,6 +959,32 @@ then
             FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
 
             FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
+        fi
+
+    elif echo $ARCH | egrep -q "ARM_A64"
+    then
+        if echo $ARCH | grep -q "V4_SVE"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=4"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=4"
+
+        elif echo $ARCH | grep -q "V8_SVE"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=8"
+
+        elif echo $ARCH | grep -q "V16_SVE"
+        then
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
+
+        else
+            FLAGS_C_COMPILER+=" -DVPIC_SIMD_LEN=16"
+
+            FLAGS_CXX_COMPILER+=" -DVPIC_SIMD_LEN=16"
         fi
 
     else
