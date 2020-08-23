@@ -841,33 +841,33 @@ then
             if echo $ARCH | grep -q "V4_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
-                FLAGS_C_COMPILER+=" -msve-vector-bits=128"
+               #FLAGS_C_COMPILER+=" -msve-vector-bits=128"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
-                FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
+               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
 
             elif echo $ARCH | grep -q "V8_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-                FLAGS_C_COMPILER+=" -msve-vector-bits=256"
+               #FLAGS_C_COMPILER+=" -msve-vector-bits=256"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-                FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
+               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
 
             elif echo $ARCH | grep -q "V16_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-                FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+               #FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-                FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
 
             else
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-                FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+               #FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-                FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
             fi
         fi
     fi
