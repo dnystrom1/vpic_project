@@ -481,14 +481,14 @@ then
        #FLAGS_C_COMPILER+=" -march=armv8.2-a+sve"
        #FLAGS_C_COMPILER+=" -mcpu=a64fx"
        #FLAGS_C_COMPILER+=" -armpl=sve"
-       #FLAGS_C_COMPILER+=" -DARM_SVE"
+        FLAGS_C_COMPILER+=" -DARM_SVE"
 
         FLAGS_CXX_COMPILER+=" -mcpu=native"
         FLAGS_CXX_COMPILER+=" -armpl"
        #FLAGS_CXX_COMPILER+=" -march=armv8.2-a+sve"
        #FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
        #FLAGS_CXX_COMPILER+=" -armpl=sve"
-       #FLAGS_CXX_COMPILER+=" -DARM_SVE"
+        FLAGS_CXX_COMPILER+=" -DARM_SVE"
     fi
 
     # Build with SVE support to use with ARMIE.
