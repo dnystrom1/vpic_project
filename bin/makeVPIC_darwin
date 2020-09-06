@@ -884,33 +884,53 @@ then
             if echo $ARCH | grep -q "V4_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
-               #FLAGS_C_COMPILER+=" -msve-vector-bits=128"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
-               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
+
+                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
+                then
+                    FLAGS_C_COMPILER+=" -msve-vector-bits=128"
+
+                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
+                fi
 
             elif echo $ARCH | grep -q "V8_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-               #FLAGS_C_COMPILER+=" -msve-vector-bits=256"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
+
+                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
+                then
+                    FLAGS_C_COMPILER+=" -msve-vector-bits=256"
+
+                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
+                fi
 
             elif echo $ARCH | grep -q "V16_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-               #FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
+                then
+                    FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+                fi
 
             else
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-               #FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-               #FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
+                then
+                    FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+                fi
             fi
         fi
     fi
