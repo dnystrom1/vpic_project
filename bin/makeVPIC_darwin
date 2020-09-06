@@ -200,6 +200,27 @@ then
             module load ThunderX2CN99/RHEL/7/gcc-8.2.0/armpl/19.1.0
             echo "module load ThunderX2CN99/RHEL/7/gcc-8.2.0/armpl/19.1.0" >> bashrc.modules
         fi
+
+    elif echo $ARCH | egrep -q "ARM_A64"
+    then
+        if [ ! "x$VERSION_ARM_A64" = "x" ]
+        then
+            module restore PrgEnv-gnu
+            echo "module restore PrgEnv-gnu" >> bashrc.modules
+        else
+            module restore PrgEnv-gnu
+            echo "module restore PrgEnv-gnu" >> bashrc.modules
+        fi
+
+        if [ ! "x$VERSION_CMAKE" = "x" ]
+        then
+            module load cmake/$VERSION_CMAKE
+            echo "module load cmake/$VERSION_CMAKE" >> bashrc.modules
+        else
+            module load cmake
+            echo "module load cmake" >> bashrc.modules
+        fi
+
     else
         if [ ! "x$VERSION_GNU" = "x" ]
         then
@@ -255,9 +276,20 @@ then
     if echo $ARCH | egrep -q "ARM_TX2"
     then
         FLAGS_C_COMPILER+=" -mfpu=neon"
-    #    FLAGS_C_COMPILER+=" -march=native"
-    #    FLAGS_C_COMPILER+=" -march=native"
-    #    FLAGS_C_COMPILER+=" -mtune=native"
+       #FLAGS_C_COMPILER+=" -march=native"
+       #FLAGS_C_COMPILER+=" -march=native"
+       #FLAGS_C_COMPILER+=" -mtune=native"
+    fi
+
+    # Build with SVE support for Fujitsu ARM A64FX.
+    if echo $ARCH | grep -q "ARM_A64"
+    then
+        FLAGS_C_COMPILER+=" -mcpu=native"
+       #FLAGS_C_COMPILER+=" -armpl"
+        FLAGS_C_COMPILER+=" -march=armv8.2-a+sve+simd"
+       #FLAGS_C_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_C_COMPILER+=" -armpl=sve"
+        FLAGS_C_COMPILER+=" -DARM_SVE"
     fi
 
    #FLAGS_CXX_COMPILER="-g -O2"
@@ -305,9 +337,20 @@ then
     if echo $ARCH | egrep -q "ARM_TX2"
     then
         FLAGS_CXX_COMPILER+=" -mfpu=neon"
-    #    FLAGS_CXX_COMPILER+=" -march=native"
-    #    FLAGS_CXX_COMPILER+=" -march=native"
-    #    FLAGS_CXX_COMPILER+=" -mtune=native"
+       #FLAGS_CXX_COMPILER+=" -march=native"
+       #FLAGS_CXX_COMPILER+=" -march=native"
+       #FLAGS_CXX_COMPILER+=" -mtune=native"
+    fi
+
+    # Build with SVE support for Fujitsu ARM A64FX.
+    if echo $ARCH | grep -q "ARM_A64"
+    then
+        FLAGS_CXX_COMPILER+=" -mcpu=native"
+       #FLAGS_CXX_COMPILER+=" -armpl"
+        FLAGS_CXX_COMPILER+=" -march=armv8.2-a+sve+simd"
+       #FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_CXX_COMPILER+=" -armpl=sve"
+        FLAGS_CXX_COMPILER+=" -DARM_SVE"
     fi
 fi
 
@@ -1578,7 +1621,7 @@ then
 	-DENABLE_COLOR_UNIT_TESTS=OFF \
 	-DENABLE_INTEGRATED_TESTS=OFF \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_SVE=ON \
+	-DUSE_V4_NEON=ON \
 	-DUSE_V8_SVE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -1613,8 +1656,7 @@ then
 	-DENABLE_COLOR_UNIT_TESTS=OFF \
 	-DENABLE_INTEGRATED_TESTS=OFF \
 	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_SVE=ON \
-	-DUSE_V8_SVE=ON \
+	-DUSE_V4_NEON=ON \
 	-DUSE_V16_SVE=ON \
 	-DVPIC_PRINT_MORE_DIGITS=ON \
 	-DUSE_OPENMP=$SET_OPENMP \
@@ -1626,6 +1668,8 @@ then
 	..
     make -j $NJ VERBOSE=1
 fi
+
+#	-DUSE_V8_SVE=ON \
 
 #	-DENABLE_COLOR_UNIT_TESTS=ON \
 #	-DENABLE_INTEGRATED_TESTS=ON \
