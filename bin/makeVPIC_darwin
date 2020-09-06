@@ -290,6 +290,23 @@ then
        #FLAGS_C_COMPILER+=" -mcpu=a64fx"
        #FLAGS_C_COMPILER+=" -armpl=sve"
         FLAGS_C_COMPILER+=" -DARM_SVE"
+
+        if echo $ARCH | grep -q "V4_SVE"
+        then
+            FLAGS_C_COMPILER+=" -msve-vector-bits=128"
+
+        elif echo $ARCH | grep -q "V8_SVE"
+        then
+            FLAGS_C_COMPILER+=" -msve-vector-bits=256"
+
+        elif echo $ARCH | grep -q "V16_SVE"
+        then
+            FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+	else
+            FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+	fi
     fi
 
    #FLAGS_CXX_COMPILER="-g -O2"
@@ -351,6 +368,23 @@ then
        #FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
        #FLAGS_CXX_COMPILER+=" -armpl=sve"
         FLAGS_CXX_COMPILER+=" -DARM_SVE"
+
+        if echo $ARCH | grep -q "V4_SVE"
+        then
+            FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
+
+        elif echo $ARCH | grep -q "V8_SVE"
+        then
+            FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
+
+        elif echo $ARCH | grep -q "V16_SVE"
+        then
+            FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+	else
+            FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+	fi
     fi
 fi
 
@@ -887,25 +921,11 @@ then
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=4"
 
-                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
-                then
-                    FLAGS_C_COMPILER+=" -msve-vector-bits=128"
-
-                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=128"
-                fi
-
             elif echo $ARCH | grep -q "V8_SVE"
             then
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=8"
-
-                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
-                then
-                    FLAGS_C_COMPILER+=" -msve-vector-bits=256"
-
-                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=256"
-                fi
 
             elif echo $ARCH | grep -q "V16_SVE"
             then
@@ -913,24 +933,10 @@ then
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
 
-                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
-                then
-                    FLAGS_C_COMPILER+=" -msve-vector-bits=512"
-
-                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
-                fi
-
             else
                 FLAGS_C_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
 
                 FLAGS_CXX_COMPILER+=" -DPARTICLE_BLOCK_SIZE=16"
-
-                if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
-                then
-                    FLAGS_C_COMPILER+=" -msve-vector-bits=512"
-
-                    FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
-                fi
             fi
         fi
     fi
