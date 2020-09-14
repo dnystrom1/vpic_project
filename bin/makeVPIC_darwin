@@ -207,9 +207,13 @@ then
         then
             module restore PrgEnv-gnu
             echo "module restore PrgEnv-gnu" >> bashrc.modules
+            module swap gcc/10.2.0 gcc/11.0.0c
+            echo "module swap gcc/10.2.0 gcc/11.0.0c" >> bashrc.modules
         else
             module restore PrgEnv-gnu
             echo "module restore PrgEnv-gnu" >> bashrc.modules
+            module swap gcc/10.2.0 gcc/11.0.0c
+            echo "module swap gcc/10.2.0 gcc/11.0.0c" >> bashrc.modules
         fi
 
         if [ ! "x$VERSION_CMAKE" = "x" ]
@@ -258,11 +262,11 @@ then
             FLAGS_C_COMPILER+=" -march=skylake-avx512"
             FLAGS_C_COMPILER+=" -mtune=skylake-avx512"
             FLAGS_C_COMPILER+=" -mdump-tune-features"
-	else
+        else
             FLAGS_C_COMPILER+=" -march=skylake"
             FLAGS_C_COMPILER+=" -mtune=skylake"
             FLAGS_C_COMPILER+=" -mdump-tune-features"
-	fi
+        fi
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"
@@ -284,10 +288,10 @@ then
     # Build with SVE support for Fujitsu ARM A64FX.
     if echo $ARCH | grep -q "ARM_A64"
     then
-        FLAGS_C_COMPILER+=" -mcpu=native"
+        FLAGS_C_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_C_COMPILER+=" -mcpu=native"
        #FLAGS_C_COMPILER+=" -armpl"
-        FLAGS_C_COMPILER+=" -march=armv8.2-a+sve+simd"
-       #FLAGS_C_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_C_COMPILER+=" -march=armv8.2-a+sve+simd"
        #FLAGS_C_COMPILER+=" -armpl=sve"
         FLAGS_C_COMPILER+=" -DARM_SVE"
 
@@ -303,10 +307,14 @@ then
         then
             FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
-	else
+        elif echo $ARCH | grep -q "V1_VECT"
+        then
             FLAGS_C_COMPILER+=" -msve-vector-bits=512"
 
-	fi
+       #else
+           #FLAGS_C_COMPILER+=" -msve-vector-bits=512"
+
+        fi
     fi
 
    #FLAGS_CXX_COMPILER="-g -O2"
@@ -335,11 +343,11 @@ then
             FLAGS_CXX_COMPILER+=" -march=skylake-avx512"
             FLAGS_CXX_COMPILER+=" -mtune=skylake-avx512"
             FLAGS_CXX_COMPILER+=" -mdump-tune-features"
-	else
+        else
             FLAGS_CXX_COMPILER+=" -march=skylake"
             FLAGS_CXX_COMPILER+=" -mtune=skylake"
             FLAGS_CXX_COMPILER+=" -mdump-tune-features"
-	fi
+        fi
     fi
 
     if echo $ARCH | grep -q "IBM_PW9"
@@ -362,10 +370,10 @@ then
     # Build with SVE support for Fujitsu ARM A64FX.
     if echo $ARCH | grep -q "ARM_A64"
     then
-        FLAGS_CXX_COMPILER+=" -mcpu=native"
+        FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_CXX_COMPILER+=" -mcpu=native"
        #FLAGS_CXX_COMPILER+=" -armpl"
-        FLAGS_CXX_COMPILER+=" -march=armv8.2-a+sve+simd"
-       #FLAGS_CXX_COMPILER+=" -mcpu=a64fx"
+       #FLAGS_CXX_COMPILER+=" -march=armv8.2-a+sve+simd"
        #FLAGS_CXX_COMPILER+=" -armpl=sve"
         FLAGS_CXX_COMPILER+=" -DARM_SVE"
 
@@ -381,10 +389,14 @@ then
         then
             FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
 
-	else
+        elif echo $ARCH | grep -q "V1_VECT"
+        then
             FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
 
-	fi
+       #else
+           #FLAGS_CXX_COMPILER+=" -msve-vector-bits=512"
+
+        fi
     fi
 fi
 
@@ -1112,11 +1124,11 @@ then
 
     if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
     then
-	FLAGS_C_COMPILER+=" -debug inline-debug-info"
-	FLAGS_C_COMPILER+=" -parallel-source-info=2"
+        FLAGS_C_COMPILER+=" -debug inline-debug-info"
+        FLAGS_C_COMPILER+=" -parallel-source-info=2"
 
-	FLAGS_CXX_COMPILER+=" -debug inline-debug-info"
-	FLAGS_CXX_COMPILER+=" -parallel-source-info=2"
+        FLAGS_CXX_COMPILER+=" -debug inline-debug-info"
+        FLAGS_CXX_COMPILER+=" -parallel-source-info=2"
     fi
 fi
 
@@ -1209,8 +1221,8 @@ then
         module load forge/$VERSION_FORGE
         echo "module load forge/$VERSION_FORGE" >> bashrc.modules
     else
-	module load forge
-	echo "module load forge" >> bashrc.modules
+        module load forge
+        echo "module load forge" >> bashrc.modules
     fi
 fi
 
@@ -1221,16 +1233,16 @@ if echo $ARCH | grep -q "GPROF"
 then
     if echo $ARCH | egrep -q "INT_OPT|INT_DBG"
     then
-	FLAGS_C_COMPILER+=" -p"
+        FLAGS_C_COMPILER+=" -p"
 
-	FLAGS_CXX_COMPILER+=" -p"
+        FLAGS_CXX_COMPILER+=" -p"
     fi
 
     if echo $ARCH | egrep -q "GNU_OPT|GNU_DBG"
     then
-	FLAGS_C_COMPILER+=" -pg"
+        FLAGS_C_COMPILER+=" -pg"
 
-	FLAGS_CXX_COMPILER+=" -pg"
+        FLAGS_CXX_COMPILER+=" -pg"
     fi
 fi
 
@@ -1249,24 +1261,24 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1280,24 +1292,24 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1311,25 +1323,25 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_PORTABLE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_PORTABLE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1343,25 +1355,25 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_SSE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_SSE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1375,25 +1387,25 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_AVX2=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_AVX2=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1407,26 +1419,26 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_PORTABLE=ON \
-	-DUSE_V8_PORTABLE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_PORTABLE=ON \
+        -DUSE_V8_PORTABLE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1440,26 +1452,26 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_AVX2=ON \
-	-DUSE_V8_AVX2=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_AVX2=ON \
+        -DUSE_V8_AVX2=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1473,27 +1485,27 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_PORTABLE=ON \
-	-DUSE_V8_PORTABLE=ON \
-	-DUSE_V16_PORTABLE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_PORTABLE=ON \
+        -DUSE_V8_PORTABLE=ON \
+        -DUSE_V16_PORTABLE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with Intel compilers.
@@ -1507,27 +1519,27 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_AVX2=ON \
-	-DUSE_V8_AVX2=ON \
-	-DUSE_V16_AVX512=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_AVX2=ON \
+        -DUSE_V8_AVX2=ON \
+        -DUSE_V16_AVX512=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC with GNU compilers for IBM Power 9.
@@ -1541,25 +1553,25 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_ALTIVEC=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_ALTIVEC=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC for ARM TX2 with V4 NEON intrinsics support.
@@ -1573,27 +1585,27 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DENABLE_COLOR_UNIT_TESTS=OFF \
-	-DENABLE_INTEGRATED_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_NEON=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DENABLE_COLOR_UNIT_TESTS=OFF \
+        -DENABLE_INTEGRATED_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_NEON=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
@@ -1607,27 +1619,27 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DENABLE_COLOR_UNIT_TESTS=OFF \
-	-DENABLE_INTEGRATED_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_SVE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DENABLE_COLOR_UNIT_TESTS=OFF \
+        -DENABLE_INTEGRATED_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_SVE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
@@ -1641,28 +1653,28 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DENABLE_COLOR_UNIT_TESTS=OFF \
-	-DENABLE_INTEGRATED_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_NEON=ON \
-	-DUSE_V8_SVE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DENABLE_COLOR_UNIT_TESTS=OFF \
+        -DENABLE_INTEGRATED_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_NEON=ON \
+        -DUSE_V8_SVE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
 # Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
@@ -1676,27 +1688,27 @@ then
     mkdir build
     cd build
     cmake \
-	-LAH \
-	-DCMAKE_BUILD_TYPE=None \
-	-DENABLE_UNIT_TESTS=OFF \
-	-DENABLE_COLOR_UNIT_TESTS=OFF \
-	-DENABLE_INTEGRATED_TESTS=OFF \
-	-DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-	-DUSE_V4_NEON=ON \
-	-DUSE_V16_SVE=ON \
-	-DVPIC_PRINT_MORE_DIGITS=ON \
-	-DUSE_OPENMP=$SET_OPENMP \
-	-DUSE_PTHREADS=$SET_PTHREADS \
-	-DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
-	-DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
-	-DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
-	-DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
-	..
+        -LAH \
+        -DCMAKE_BUILD_TYPE=None \
+        -DENABLE_UNIT_TESTS=OFF \
+        -DENABLE_COLOR_UNIT_TESTS=OFF \
+        -DENABLE_INTEGRATED_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
+        -DUSE_V4_NEON=ON \
+        -DUSE_V16_SVE=ON \
+        -DVPIC_PRINT_MORE_DIGITS=ON \
+        -DUSE_OPENMP=$SET_OPENMP \
+        -DUSE_PTHREADS=$SET_PTHREADS \
+        -DCMAKE_C_COMPILER=$VPIC_COMPILER_C \
+        -DCMAKE_CXX_COMPILER=$VPIC_COMPILER_CXX \
+        -DCMAKE_C_FLAGS="$FLAGS_C_COMPILER" \
+        -DCMAKE_CXX_FLAGS="$FLAGS_CXX_COMPILER" \
+        ..
     make -j $NJ VERBOSE=1
 fi
 
-#	-DUSE_V8_SVE=ON \
+#       -DUSE_V8_SVE=ON \
 
-#	-DENABLE_COLOR_UNIT_TESTS=ON \
-#	-DENABLE_INTEGRATED_TESTS=ON \
-#	-DENABLE_UNIT_TESTS=ON \
+#       -DENABLE_COLOR_UNIT_TESTS=ON \
+#       -DENABLE_INTEGRATED_TESTS=ON \
+#       -DENABLE_UNIT_TESTS=ON \
