@@ -1642,7 +1642,7 @@ fi
 #       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
-# Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
+# Build an optimized version of VPIC for ARM A64 with V8 SVE intrinsics support.
 
 if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V8_SVE${FEAT}" ]
 then
@@ -1659,7 +1659,7 @@ then
         -DENABLE_COLOR_UNIT_TESTS=OFF \
         -DENABLE_INTEGRATED_TESTS=OFF \
         -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-        -DUSE_V4_NEON=ON \
+        -DUSE_V4_PORTABLE=ON \
         -DUSE_V8_SVE=ON \
         -DVPIC_PRINT_MORE_DIGITS=ON \
         -DUSE_OPENMP=$SET_OPENMP \
@@ -1672,12 +1672,14 @@ then
     make -j $NJ VERBOSE=1
 fi
 
+#        -DUSE_V4_NEON=ON \
+
 #       -DENABLE_COLOR_UNIT_TESTS=ON \
 #       -DENABLE_INTEGRATED_TESTS=ON \
 #       -DENABLE_UNIT_TESTS=ON \
 
 ##########################################################################################
-# Build an optimized version of VPIC for ARM A64 with V4 SVE intrinsics support.
+# Build an optimized version of VPIC for ARM A64 with V16 SVE intrinsics support.
 
 if [ $ARCH = "DARWIN_${NODE}_${VMPI}_${VTHR}_${VCOM}_${VOPT}_V16_SVE${FEAT}" ]
 then
@@ -1694,7 +1696,7 @@ then
         -DENABLE_COLOR_UNIT_TESTS=OFF \
         -DENABLE_INTEGRATED_TESTS=OFF \
         -DBUILD_SHARED_LIBS=$SET_SHARED_LIBS \
-        -DUSE_V4_NEON=ON \
+        -DUSE_V4_PORTABLE=ON \
         -DUSE_V16_SVE=ON \
         -DVPIC_PRINT_MORE_DIGITS=ON \
         -DUSE_OPENMP=$SET_OPENMP \
@@ -1707,6 +1709,7 @@ then
     make -j $NJ VERBOSE=1
 fi
 
+#       -DUSE_V4_NEON=ON \
 #       -DUSE_V8_SVE=ON \
 
 #       -DENABLE_COLOR_UNIT_TESTS=ON \
