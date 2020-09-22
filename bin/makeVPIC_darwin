@@ -252,7 +252,7 @@ then
     then
         FLAGS_C_COMPILER+=" -march=native"
         FLAGS_C_COMPILER+=" -mtune=native"
-        FLAGS_C_COMPILER+=" -mdump-tune-features"
+       #FLAGS_C_COMPILER+=" -mdump-tune-features"
     fi
 
     if echo $ARCH | egrep -q "INT_SKY"
@@ -333,7 +333,7 @@ then
     then
         FLAGS_CXX_COMPILER+=" -march=native"
         FLAGS_CXX_COMPILER+=" -mtune=native"
-        FLAGS_CXX_COMPILER+=" -mdump-tune-features"
+       #FLAGS_CXX_COMPILER+=" -mdump-tune-features"
     fi
 
     if echo $ARCH | egrep -q "INT_SKY"
@@ -347,6 +347,17 @@ then
             FLAGS_CXX_COMPILER+=" -march=skylake"
             FLAGS_CXX_COMPILER+=" -mtune=skylake"
             FLAGS_CXX_COMPILER+=" -mdump-tune-features"
+        fi
+    fi
+
+    if echo $ARCH | egrep -q "INT_KNL"
+    then
+        if echo $ARCH | egrep -q "_DBG_V16_|_OPT_V16_"
+        then
+            FLAGS_CXX_COMPILER+=" -mavx512f"
+            FLAGS_CXX_COMPILER+=" -mavx512cd"
+            FLAGS_CXX_COMPILER+=" -mavx512pf"
+            FLAGS_CXX_COMPILER+=" -mavx512er"
         fi
     fi
 
